@@ -169,7 +169,7 @@ public class JsonServiceUtil {
 
         StringWriter sw = new StringWriter();
         JsonGenerator jg = jsonFactory.createJsonGenerator(sw);
-        if(prettyPrint) {
+        if (prettyPrint) {
             jg.useDefaultPrettyPrinter();
         }
         mapper.writeValue(jg, pojo);
@@ -189,7 +189,7 @@ public class JsonServiceUtil {
             JsonGenerationException, IOException {
 
         JsonGenerator jg = jsonFactory.createJsonGenerator(fw);
-        if(prettyPrint) {
+        if (prettyPrint) {
             jg.useDefaultPrettyPrinter();
         }
         mapper.writeValue(jg, pojo);

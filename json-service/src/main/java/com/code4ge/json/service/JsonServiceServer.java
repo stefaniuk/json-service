@@ -37,7 +37,7 @@ public class JsonServiceServer {
     public JsonServiceServer register(Class<?> clazz) {
 
         String name = clazz.getName();
-        if(!registry.containsKey(name)) {
+        if (!registry.containsKey(name)) {
             registry.put(name, new JsonServiceObject(clazz));
         }
 
@@ -51,7 +51,7 @@ public class JsonServiceServer {
     public JsonServiceServer register(Object obj) {
 
         String name = obj.getClass().getName();
-        if(!registry.containsKey(name)) {
+        if (!registry.containsKey(name)) {
             registry.put(name, new JsonServiceObject(obj));
         }
 
@@ -101,7 +101,7 @@ public class JsonServiceServer {
         try {
             mapper.writeValue(os, lookup(clazz).getServiceMap());
         }
-        catch(Exception e) {
+        catch (Exception e) {
             // TODO
             e.printStackTrace(System.err);
         }
@@ -120,7 +120,7 @@ public class JsonServiceServer {
         try {
             handleNode(lookup(clazz), null, mapper.readValue(is, JsonNode.class), os);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             // TODO
             e.printStackTrace(System.err);
         }
@@ -139,7 +139,7 @@ public class JsonServiceServer {
         try {
             handleNode(lookup(clazz), request, mapper.readValue(request.getInputStream(), JsonNode.class), os);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             // TODO
             e.printStackTrace(System.err);
         }
@@ -163,10 +163,10 @@ public class JsonServiceServer {
             throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
             InvocationTargetException, JsonServiceException {
 
-        if(requestNode.isObject()) {
+        if (requestNode.isObject()) {
             handleObject(service, request, ObjectNode.class.cast(requestNode), os);
         }
-        else if(requestNode.isArray()) {
+        else if (requestNode.isArray()) {
             handleArray(service, request, ArrayNode.class.cast(requestNode), os);
         }
         else {
@@ -191,7 +191,7 @@ public class JsonServiceServer {
             throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
             InvocationTargetException, JsonServiceException {
 
-        for(int i = 0; i < requestNode.size(); i++) {
+        for (int i = 0; i < requestNode.size(); i++) {
             handleNode(service, request, requestNode.get(i), os);
         }
     }

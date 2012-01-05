@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.code4ge</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>code4ge-json-service-test</artifactId>
     <version>1.0.0</version>
-    <packaging>pom</packaging>
-    <name>parent</name>
+    <packaging>war</packaging>
+    <name>code4ge-json-service-test</name>
     <url>https://github.com/stefaniuk/com.code4ge.json.service</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,10 +14,6 @@
         <springframework.version>3.1.0.RELEASE</springframework.version>
         <junit.version>4.10</junit.version>
     </properties>
-    <modules>
-        <module>code4ge-json-service</module>
-        <module>code4ge-json-service-test</module>
-    </modules>
     <repositories>
         <repository>
             <id>java.net2</id>
@@ -31,6 +27,11 @@
             <artifactId>javaee-web-api</artifactId>
             <version>${servlet.api.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.code4ge</groupId>
+            <artifactId>code4ge-json-service</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
@@ -54,4 +55,18 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>code4ge-json-service-test</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

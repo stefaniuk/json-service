@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context
+    docBase="d:\projects\com.code4ge.json.service\code4ge-json-service-test\target\code4ge-json-service-test\"
+    workDir="d:\projects\com.code4ge.json.service\code4ge-json-service-test\target\code4ge-json-service-test\WEB-INF\work\"
+    path="/code4ge-json-service-test"
+    privileged="true"
+    reloadable="true"
+/>

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.code4ge</groupId>
     <artifactId>code4ge-json-service</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>code4ge-json-service</name>
     <url>https://github.com/stefaniuk/com.code4ge.json.service</url>

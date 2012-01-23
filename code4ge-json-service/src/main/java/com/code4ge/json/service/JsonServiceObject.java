@@ -170,9 +170,9 @@ public class JsonServiceObject {
 
         public static String getName(Class<?> clazz) {
 
-            for (DataType type: DataType.values()) {
-                for (Class<?> c: type.classes) {
-                    if (clazz.equals(c)) {
+            for(DataType type: DataType.values()) {
+                for(Class<?> c: type.classes) {
+                    if(clazz.equals(c)) {
                         return type.toString();
                     }
                 }
@@ -309,15 +309,15 @@ public class JsonServiceObject {
 
         try {
 
-            if (context == null) {
+            if(context == null) {
                 // get context object
                 Constructor<?> ctor = clazz.getConstructor();
                 context = ctor.newInstance();
             }
 
             // get methods
-            for (Method method: clazz.getMethods()) {
-                if (isService(clazz, method)) {
+            for(Method method: clazz.getMethods()) {
+                if(isService(clazz, method)) {
                     methods.put(method.getName(), method);
                 }
             }
@@ -331,43 +331,43 @@ public class JsonServiceObject {
             smd.put("additionalParameters", false);
 
             ObjectNode services = mapper.createObjectNode();
-            for (Method method: methods.values()) {
+            for(Method method: methods.values()) {
 
                 ObjectNode temp = mapper.createObjectNode();
 
                 JsonService annotation = method.getAnnotation(JsonService.class);
-                if (annotation == null) {
+                if(annotation == null) {
                     annotation = clazz.getAnnotation(JsonService.class);
                 }
 
                 // transport
                 Transport transport = annotation.transport();
-                if (transport != Transport.UNDEFINED && transport != this.transport) {
+                if(transport != Transport.UNDEFINED && transport != this.transport) {
                     temp.put("transport", transport.toString());
                 }
                 // contentType
                 ContentType contentType = annotation.contentType();
-                if (contentType != ContentType.UNDEFINED && contentType != this.contentType) {
+                if(contentType != ContentType.UNDEFINED && contentType != this.contentType) {
                     temp.put("contentType", contentType.toString());
                 }
                 // envelope
                 Envelope envelope = annotation.envelope();
-                if (envelope != Envelope.UNDEFINED && envelope != this.envelope) {
+                if(envelope != Envelope.UNDEFINED && envelope != this.envelope) {
                     temp.put("envelope", envelope.toString());
                 }
                 // target
                 String target = annotation.target();
-                if (!target.equals("")) {
+                if(!target.equals("")) {
                     temp.put("target", target);
                 }
                 // description
                 String description = annotation.description();
-                if (!description.equals("")) {
+                if(!description.equals("")) {
                     temp.put("description", description);
                 }
                 // parameters
                 ArrayNode parameters = mapper.createArrayNode();
-                for (Class<?> type: method.getParameterTypes()) {
+                for(Class<?> type: method.getParameterTypes()) {
                     ObjectNode node = mapper.createObjectNode();
                     node.put("type", DataType.getName(type));
                     parameters.add(node);
@@ -375,7 +375,7 @@ public class JsonServiceObject {
                 temp.put("parameters", parameters);
                 // returns
                 Class<?> returnType = method.getReturnType();
-                if (!"void".equals(returnType.toString())) {
+                if(!"void".equals(returnType.toString())) {
                     ObjectNode node = mapper.createObjectNode();
                     node.put("type", DataType.getName(returnType));
                     temp.put("returns", node);
@@ -386,7 +386,7 @@ public class JsonServiceObject {
             smd.put("services", services);
 
         }
-        catch (Exception e) {
+        catch(Exception e) {
             e.printStackTrace(System.err);
         }
     }
@@ -413,7 +413,7 @@ public class JsonServiceObject {
      */
     protected ObjectNode getServiceMap() {
 
-        if (!isInitialized) {
+        if(!isInitialized) {
             init();
         }
 
@@ -435,7 +435,7 @@ public class JsonServiceObject {
     protected ObjectNode process(HttpServletRequest request, ObjectNode requestNode) throws IllegalAccessException,
             InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
-        if (!isInitialized) {
+        if(!isInitialized) {
             init();
         }
 
@@ -443,7 +443,7 @@ public class JsonServiceObject {
 
         try {
 
-            if (!requestNode.has("method") || "".equals(requestNode.get("method"))) {
+            if(!requestNode.has("method") || "".equals(requestNode.get("method"))) {
                 throw new JsonServiceException(JsonServiceError.INVALID_REQUEST);
             }
 
@@ -451,7 +451,7 @@ public class JsonServiceObject {
 
             // get method
             Method method = methods.get(name);
-            if (method == null) {
+            if(method == null) {
                 throw new JsonServiceException(JsonServiceError.METHOD_NOT_FOUND);
             }
 
@@ -460,8 +460,8 @@ public class JsonServiceObject {
             ArrayList<Object> temp = new ArrayList<Object>();
             Type[] types = method.getGenericParameterTypes();
             int i = 0;
-            for (Type type: types) {
-                if (type.equals(HttpServletRequest.class)) {
+            for(Type type: types) {
+                if(type.equals(HttpServletRequest.class)) {
                     temp.add(request);
                 }
                 else {
@@ -476,13 +476,13 @@ public class JsonServiceObject {
             try {
                 response = getSuccessResponse(requestNode.get("id").getIntValue(), method.invoke(context, args));
             }
-            catch (IllegalArgumentException e) {
+            catch(IllegalArgumentException e) {
                 throw new JsonServiceException(JsonServiceError.INVALID_PARAMS);
             }
         }
-        catch (InvocationTargetException e) {
+        catch(InvocationTargetException e) {
             Throwable t = e.getCause();
-            if (t instanceof JsonServiceException) {
+            if(t instanceof JsonServiceException) {
                 JsonServiceException jse = (JsonServiceException) t;
                 response = getErrorResponse(requestNode.get("id").getIntValue(), jse.getError());
             }
@@ -490,7 +490,7 @@ public class JsonServiceObject {
                 throw e;
             }
         }
-        catch (JsonServiceException e) {
+        catch(JsonServiceException e) {
             response = getErrorResponse(requestNode.get("id").getIntValue(), e.getError());
         }
 
@@ -509,7 +509,7 @@ public class JsonServiceObject {
         ObjectNode responseNode = mapper.createObjectNode();
 
         // set id
-        if (id != null) {
+        if(id != null) {
             responseNode.put("id", id);
         }
         else {
@@ -517,14 +517,17 @@ public class JsonServiceObject {
         }
 
         // set result
-        if (result instanceof List<?>) {
+        if(result instanceof List<?>) {
             responseNode.put("result", toJson((List<?>) result));
+        }
+        else if(result instanceof Map<?, ?>) {
+            responseNode.put("result", toJson((Map<?, ?>) result));
         }
         else {
             try {
                 responseNode.put("result", new POJONode(result));
             }
-            catch (Exception e) {
+            catch(Exception e) {
                 responseNode.put("result", result != null ? result.toString() : null);
             }
         }
@@ -549,7 +552,7 @@ public class JsonServiceObject {
         errorNode.put("message", error.getMessage());
 
         ObjectNode responseNode = mapper.createObjectNode();
-        if (id != null) {
+        if(id != null) {
             responseNode.put("id", id);
         }
         else {
@@ -570,13 +573,83 @@ public class JsonServiceObject {
      */
     private ArrayNode toJson(List<?> list) {
 
-        ArrayNode arrayNode = mapper.createArrayNode();
+        ArrayNode node = mapper.createArrayNode();
 
-        for (Object pojo: list) {
-            arrayNode.addPOJO(pojo);
+        for(Object obj: list) {
+            if(obj instanceof Double) {
+                node.add((Double) obj);
+            }
+            else if(obj instanceof Integer) {
+                node.add((Integer) obj);
+            }
+            else if(obj instanceof Boolean) {
+                node.add((Boolean) obj);
+            }
+            else if(obj instanceof String) {
+                node.add((String) obj);
+            }
+            else if(obj instanceof List<?>) {
+                node.add(toJson((List<?>) obj));
+            }
+            else if(obj instanceof Map<?, ?>) {
+                node.add(toJson((Map<?, ?>) obj));
+            }
+            else {
+                try {
+                    node.addPOJO(obj);
+                }
+                catch(Exception e) {
+                    node.add(obj != null ? obj.toString() : null);
+                }
+            }
         }
 
-        return arrayNode;
+        return node;
+    }
+
+    /**
+     * Converts a map to JSON object.
+     * 
+     * @param map
+     * @return
+     */
+    private ObjectNode toJson(Map<?, ?> map) {
+
+        ObjectNode node = mapper.createObjectNode();
+
+        for(Object key: map.keySet()) {
+            String name = (String) key;
+            Object obj = map.get(name);
+
+            if(obj instanceof Double) {
+                node.put(name, (Double) obj);
+            }
+            else if(obj instanceof Integer) {
+                node.put(name, (Integer) obj);
+            }
+            else if(obj instanceof Boolean) {
+                node.put(name, (Boolean) obj);
+            }
+            else if(obj instanceof String) {
+                node.put(name, (String) obj);
+            }
+            else if(obj instanceof List<?>) {
+                node.put(name, toJson((List<?>) obj));
+            }
+            else if(obj instanceof Map<?, ?>) {
+                node.put(name, toJson((Map<?, ?>) obj));
+            }
+            else {
+                try {
+                    node.putPOJO(name, obj);
+                }
+                catch(Exception e) {
+                    node.put(name, obj != null ? obj.toString() : null);
+                }
+            }
+        }
+
+        return node;
     }
 
 }

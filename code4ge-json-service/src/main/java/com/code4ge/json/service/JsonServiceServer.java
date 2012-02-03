@@ -17,8 +17,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
-import com.code4ge.json.service.JsonServiceObject.OutputType;
-
 /**
  * This is a broker class that passes a request to a registered bean or returns
  * service mapping descriptor.
@@ -113,15 +111,15 @@ public class JsonServiceServer {
 
     /**
      * @param clazz
+     * @param method
      * @param is
      * @param os
-     * @param outputType
      * @return
      */
-    public OutputStream handle(Class<?> clazz, InputStream is, OutputStream os, OutputType outputType) {
+    public OutputStream handle(Class<?> clazz, String method, InputStream is, OutputStream os) {
 
         try {
-            handleNode(lookup(clazz), null, mapper.readValue(is, JsonNode.class), os, outputType);
+            handleNode(lookup(clazz), method, null, os);
         }
         catch(Exception e) {
             // TODO
@@ -139,25 +137,28 @@ public class JsonServiceServer {
      */
     public OutputStream handle(Class<?> clazz, InputStream is, OutputStream os) {
 
-        return handle(clazz, is, os, OutputType.JSON_RPC_2_0);
+        try {
+            handleNode(lookup(clazz), null, mapper.readValue(is, JsonNode.class), os);
+        }
+        catch(Exception e) {
+            // TODO
+            e.printStackTrace(System.err);
+        }
+
+        return os;
     }
 
     /**
      * @param clazz
+     * @param method
      * @param request
      * @param os
-     * @param outputType
      * @return
      */
-    public OutputStream handle(Class<?> clazz, HttpServletRequest request, OutputStream os, OutputType outputType) {
+    public OutputStream handle(Class<?> clazz, String method, HttpServletRequest request, OutputStream os) {
 
         try {
-            handleNode(
-                lookup(clazz),
-                request,
-                mapper.readValue(request.getInputStream(), JsonNode.class),
-                os,
-                outputType);
+            handleNode(lookup(clazz), method, request, os);
         }
         catch(Exception e) {
             // TODO
@@ -175,7 +176,34 @@ public class JsonServiceServer {
      */
     public OutputStream handle(Class<?> clazz, HttpServletRequest request, OutputStream os) {
 
-        return handle(clazz, request, os, OutputType.JSON_RPC_2_0);
+        try {
+            handleNode(lookup(clazz), request, mapper.readValue(request.getInputStream(), JsonNode.class), os);
+        }
+        catch(Exception e) {
+            // TODO
+            e.printStackTrace(System.err);
+        }
+
+        return os;
+    }
+
+    /**
+     * @param service
+     * @param method
+     * @param request
+     * @param os
+     * @throws JsonGenerationException
+     * @throws JsonMappingException
+     * @throws IOException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws JsonServiceException
+     */
+    private void handleNode(JsonServiceObject service, String method, HttpServletRequest request, OutputStream os)
+            throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
+            InvocationTargetException, JsonServiceException {
+
+        handleObject(service, method, request, os);
     }
 
     /**
@@ -183,7 +211,6 @@ public class JsonServiceServer {
      * @param request
      * @param requestNode
      * @param os
-     * @param outputType
      * @throws JsonGenerationException
      * @throws JsonMappingException
      * @throws IOException
@@ -192,15 +219,15 @@ public class JsonServiceServer {
      * @throws JsonServiceException
      */
     private void handleNode(JsonServiceObject service, HttpServletRequest request, JsonNode requestNode,
-            OutputStream os, OutputType outputType)
+            OutputStream os)
             throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
             InvocationTargetException, JsonServiceException {
 
         if(requestNode.isObject()) {
-            handleObject(service, request, ObjectNode.class.cast(requestNode), os, outputType);
+            handleObject(service, request, ObjectNode.class.cast(requestNode), os);
         }
         else if(requestNode.isArray()) {
-            handleArray(service, request, ArrayNode.class.cast(requestNode), os, outputType);
+            handleArray(service, request, ArrayNode.class.cast(requestNode), os);
         }
         else {
             throw new JsonServiceException(JsonServiceError.INVALID_REQUEST);
@@ -212,7 +239,6 @@ public class JsonServiceServer {
      * @param request
      * @param requestNode
      * @param os
-     * @param outputType
      * @throws JsonGenerationException
      * @throws JsonMappingException
      * @throws IOException
@@ -221,13 +247,33 @@ public class JsonServiceServer {
      * @throws JsonServiceException
      */
     private void handleArray(JsonServiceObject service, HttpServletRequest request, ArrayNode requestNode,
-            OutputStream os, OutputType outputType)
+            OutputStream os)
             throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
             InvocationTargetException, JsonServiceException {
 
         for(int i = 0; i < requestNode.size(); i++) {
-            handleNode(service, request, requestNode.get(i), os, outputType);
+            handleNode(service, request, requestNode.get(i), os);
         }
+    }
+
+    /**
+     * @param service
+     * @param method
+     * @param request
+     * @param os
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws JsonGenerationException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    private void handleObject(JsonServiceObject service, String method, HttpServletRequest request, OutputStream os)
+            throws IllegalAccessException, InvocationTargetException, JsonGenerationException, JsonMappingException,
+            IOException {
+
+        ObjectNode responseNode = service.process(request, method);
+
+        mapper.writeValue(os, responseNode);
     }
 
     /**
@@ -235,7 +281,6 @@ public class JsonServiceServer {
      * @param request
      * @param requestNode
      * @param os
-     * @param outputType
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      * @throws JsonGenerationException
@@ -243,11 +288,11 @@ public class JsonServiceServer {
      * @throws IOException
      */
     private void handleObject(JsonServiceObject service, HttpServletRequest request, ObjectNode requestNode,
-            OutputStream os, OutputType outputType)
+            OutputStream os)
             throws IllegalAccessException, InvocationTargetException, JsonGenerationException, JsonMappingException,
             IOException {
 
-        ObjectNode responseNode = service.process(request, requestNode, outputType);
+        ObjectNode responseNode = service.process(request, requestNode);
 
         mapper.writeValue(os, responseNode);
     }

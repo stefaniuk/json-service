@@ -30,7 +30,7 @@ public class TestServlet extends HttpServlet {
             service.getServiceMap(Service.class, response.getOutputStream());
             response.setStatus(200);
         }
-        catch (IOException e) {
+        catch(IOException e) {
             e.printStackTrace(System.err);
             response.setStatus(500);
         }
@@ -49,10 +49,10 @@ public class TestServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache");
 
         try {
-            service.handle(Service.class, request, response.getOutputStream());
+            service.handle(request, response.getOutputStream(), Service.class);
             response.setStatus(200);
         }
-        catch (IOException e) {
+        catch(IOException e) {
             e.printStackTrace(System.err);
             response.setStatus(500);
         }

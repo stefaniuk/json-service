@@ -110,55 +110,17 @@ public class JsonServiceServer {
     }
 
     /**
-     * @param clazz
-     * @param method
      * @param is
      * @param os
-     * @return
-     */
-    public OutputStream handle(Class<?> clazz, String method, InputStream is, OutputStream os) {
-
-        try {
-            handleNode(lookup(clazz), method, null, os);
-        }
-        catch(Exception e) {
-            // TODO
-            e.printStackTrace(System.err);
-        }
-
-        return os;
-    }
-
-    /**
-     * @param clazz
-     * @param is
-     * @param os
-     * @return
-     */
-    public OutputStream handle(Class<?> clazz, InputStream is, OutputStream os) {
-
-        try {
-            handleNode(lookup(clazz), null, mapper.readValue(is, JsonNode.class), os);
-        }
-        catch(Exception e) {
-            // TODO
-            e.printStackTrace(System.err);
-        }
-
-        return os;
-    }
-
-    /**
      * @param clazz
      * @param method
-     * @param request
-     * @param os
+     * @param args
      * @return
      */
-    public OutputStream handle(Class<?> clazz, String method, HttpServletRequest request, OutputStream os) {
+    public OutputStream handle(InputStream is, OutputStream os, Class<?> clazz, String method, Object... args) {
 
         try {
-            handleNode(lookup(clazz), method, request, os);
+            handleNode(null, os, lookup(clazz), method, args);
         }
         catch(Exception e) {
             // TODO
@@ -169,15 +131,15 @@ public class JsonServiceServer {
     }
 
     /**
+     * @param is
+     * @param os
      * @param clazz
-     * @param request
-     * @param os
      * @return
      */
-    public OutputStream handle(Class<?> clazz, HttpServletRequest request, OutputStream os) {
+    public OutputStream handle(InputStream is, OutputStream os, Class<?> clazz) {
 
         try {
-            handleNode(lookup(clazz), request, mapper.readValue(request.getInputStream(), JsonNode.class), os);
+            handleNode(null, mapper.readValue(is, JsonNode.class), os, lookup(clazz));
         }
         catch(Exception e) {
             // TODO
@@ -188,10 +150,52 @@ public class JsonServiceServer {
     }
 
     /**
+     * @param request
+     * @param os
+     * @param clazz
+     * @param method
+     * @param args
+     * @return
+     */
+    public OutputStream handle(HttpServletRequest request, OutputStream os, Class<?> clazz, String method,
+            Object... args) {
+
+        try {
+            handleNode(request, os, lookup(clazz), method, args);
+        }
+        catch(Exception e) {
+            // TODO
+            e.printStackTrace(System.err);
+        }
+
+        return os;
+    }
+
+    /**
+     * @param request
+     * @param os
+     * @param clazz
+     * @return
+     */
+    public OutputStream handle(HttpServletRequest request, OutputStream os, Class<?> clazz) {
+
+        try {
+            handleNode(request, mapper.readValue(request.getInputStream(), JsonNode.class), os, lookup(clazz));
+        }
+        catch(Exception e) {
+            // TODO
+            e.printStackTrace(System.err);
+        }
+
+        return os;
+    }
+
+    /**
+     * @param request
+     * @param os
      * @param service
      * @param method
-     * @param request
-     * @param os
+     * @param args
      * @throws JsonGenerationException
      * @throws JsonMappingException
      * @throws IOException
@@ -199,18 +203,19 @@ public class JsonServiceServer {
      * @throws InvocationTargetException
      * @throws JsonServiceException
      */
-    private void handleNode(JsonServiceObject service, String method, HttpServletRequest request, OutputStream os)
+    private void handleNode(HttpServletRequest request, OutputStream os, JsonServiceObject service, String method,
+            Object... args)
             throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
             InvocationTargetException, JsonServiceException {
 
-        handleObject(service, method, request, os);
+        handleObject(request, os, service, method, args);
     }
 
     /**
-     * @param service
      * @param request
      * @param requestNode
      * @param os
+     * @param service
      * @throws JsonGenerationException
      * @throws JsonMappingException
      * @throws IOException
@@ -218,16 +223,15 @@ public class JsonServiceServer {
      * @throws InvocationTargetException
      * @throws JsonServiceException
      */
-    private void handleNode(JsonServiceObject service, HttpServletRequest request, JsonNode requestNode,
-            OutputStream os)
+    private void handleNode(HttpServletRequest request, JsonNode requestNode, OutputStream os, JsonServiceObject service)
             throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
             InvocationTargetException, JsonServiceException {
 
         if(requestNode.isObject()) {
-            handleObject(service, request, ObjectNode.class.cast(requestNode), os);
+            handleObject(request, ObjectNode.class.cast(requestNode), os, service);
         }
         else if(requestNode.isArray()) {
-            handleArray(service, request, ArrayNode.class.cast(requestNode), os);
+            handleArray(request, ArrayNode.class.cast(requestNode), os, service);
         }
         else {
             throw new JsonServiceException(JsonServiceError.INVALID_REQUEST);
@@ -235,10 +239,10 @@ public class JsonServiceServer {
     }
 
     /**
-     * @param service
      * @param request
      * @param requestNode
      * @param os
+     * @param service
      * @throws JsonGenerationException
      * @throws JsonMappingException
      * @throws IOException
@@ -246,49 +250,51 @@ public class JsonServiceServer {
      * @throws InvocationTargetException
      * @throws JsonServiceException
      */
-    private void handleArray(JsonServiceObject service, HttpServletRequest request, ArrayNode requestNode,
-            OutputStream os)
+    private void handleArray(HttpServletRequest request, ArrayNode requestNode, OutputStream os,
+            JsonServiceObject service)
             throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
             InvocationTargetException, JsonServiceException {
 
         for(int i = 0; i < requestNode.size(); i++) {
-            handleNode(service, request, requestNode.get(i), os);
+            handleNode(request, requestNode.get(i), os, service);
         }
     }
 
     /**
-     * @param service
-     * @param method
      * @param request
      * @param os
+     * @param service
+     * @param method
+     * @param args
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      * @throws JsonGenerationException
      * @throws JsonMappingException
      * @throws IOException
      */
-    private void handleObject(JsonServiceObject service, String method, HttpServletRequest request, OutputStream os)
+    private void handleObject(HttpServletRequest request, OutputStream os, JsonServiceObject service, String method,
+            Object... args)
             throws IllegalAccessException, InvocationTargetException, JsonGenerationException, JsonMappingException,
             IOException {
 
-        JsonNode responseNode = service.process(request, method);
+        JsonNode responseNode = service.process(request, method, args);
 
         mapper.writeValue(os, responseNode);
     }
 
     /**
-     * @param service
      * @param request
      * @param requestNode
      * @param os
+     * @param service
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      * @throws JsonGenerationException
      * @throws JsonMappingException
      * @throws IOException
      */
-    private void handleObject(JsonServiceObject service, HttpServletRequest request, ObjectNode requestNode,
-            OutputStream os)
+    private void handleObject(HttpServletRequest request, ObjectNode requestNode, OutputStream os,
+            JsonServiceObject service)
             throws IllegalAccessException, InvocationTargetException, JsonGenerationException, JsonMappingException,
             IOException {
 

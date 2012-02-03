@@ -432,7 +432,7 @@ public class JsonServiceObject {
      * @throws JsonMappingException
      * @throws IOException
      */
-    protected JsonNode process(HttpServletRequest request, String method)
+    protected JsonNode process(HttpServletRequest request, String method, Object... args)
             throws IllegalAccessException,
             InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
@@ -450,9 +450,24 @@ public class JsonServiceObject {
                 throw new JsonServiceException(JsonServiceError.METHOD_NOT_FOUND);
             }
 
+            // get parameters
+            ArrayList<Object> temp = new ArrayList<Object>();
+            Type[] types = m.getGenericParameterTypes();
+            int i = 0;
+            for(Type type: types) {
+                if(type.equals(HttpServletRequest.class)) {
+                    temp.add(request);
+                }
+                else {
+                    temp.add(args[i++]);
+                }
+            }
+            Object[] arguments = new Object[temp.size()];
+            temp.toArray(arguments);
+
             // invoke method
             try {
-                response = getJsonSuccessResponse(m.invoke(context));
+                response = getJsonSuccessResponse(m.invoke(context, arguments));
             }
             catch(IllegalArgumentException e) {
                 throw new JsonServiceException(JsonServiceError.INVALID_PARAMS);

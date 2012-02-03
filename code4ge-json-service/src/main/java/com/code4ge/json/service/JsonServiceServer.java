@@ -271,7 +271,7 @@ public class JsonServiceServer {
             throws IllegalAccessException, InvocationTargetException, JsonGenerationException, JsonMappingException,
             IOException {
 
-        ObjectNode responseNode = service.process(request, method);
+        JsonNode responseNode = service.process(request, method);
 
         mapper.writeValue(os, responseNode);
     }
@@ -292,7 +292,7 @@ public class JsonServiceServer {
             throws IllegalAccessException, InvocationTargetException, JsonGenerationException, JsonMappingException,
             IOException {
 
-        ObjectNode responseNode = service.process(request, requestNode);
+        JsonNode responseNode = service.process(request, requestNode);
 
         mapper.writeValue(os, responseNode);
     }

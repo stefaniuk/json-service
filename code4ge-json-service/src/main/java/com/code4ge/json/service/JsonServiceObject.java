@@ -411,7 +411,7 @@ public class JsonServiceObject {
      * 
      * @return
      */
-    protected ObjectNode getServiceMap() {
+    protected JsonNode getServiceMap() {
 
         if(!isInitialized) {
             init();
@@ -432,7 +432,7 @@ public class JsonServiceObject {
      * @throws JsonMappingException
      * @throws IOException
      */
-    protected ObjectNode process(HttpServletRequest request, String method)
+    protected JsonNode process(HttpServletRequest request, String method)
             throws IllegalAccessException,
             InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
@@ -440,7 +440,7 @@ public class JsonServiceObject {
             init();
         }
 
-        ObjectNode response = null;
+        JsonNode response = null;
 
         try {
 
@@ -488,7 +488,7 @@ public class JsonServiceObject {
      * @throws JsonMappingException
      * @throws IOException
      */
-    protected ObjectNode process(HttpServletRequest request, ObjectNode requestNode)
+    protected JsonNode process(HttpServletRequest request, ObjectNode requestNode)
             throws IllegalAccessException,
             InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
@@ -496,7 +496,7 @@ public class JsonServiceObject {
             init();
         }
 
-        ObjectNode response = null;
+        JsonNode response = null;
 
         try {
 
@@ -560,15 +560,20 @@ public class JsonServiceObject {
      * @param result
      * @return
      */
-    private ObjectNode getJsonResponse(Object result) {
+    private JsonNode getJsonResponse(Object result) {
 
         // set result
         if(result instanceof Map<?, ?>) {
             return toJson((Map<?, ?>) result);
         }
         else {
-            // TODO: send error message
-            return mapper.createObjectNode();
+            try {
+                return new POJONode(result);
+            }
+            catch(Exception e) {
+                // TODO: send error message
+                return mapper.createObjectNode();
+            }
         }
     }
 
@@ -579,7 +584,7 @@ public class JsonServiceObject {
      * @param result
      * @return
      */
-    private ObjectNode getJsonRpcSuccessResponse(Integer id, Object result) {
+    private JsonNode getJsonRpcSuccessResponse(Integer id, Object result) {
 
         ObjectNode responseNode = mapper.createObjectNode();
 
@@ -620,7 +625,7 @@ public class JsonServiceObject {
      * @param error
      * @return
      */
-    private ObjectNode getJsonRpcErrorResponse(Integer id, JsonServiceError error) {
+    private JsonNode getJsonRpcErrorResponse(Integer id, JsonServiceError error) {
 
         ObjectNode errorNode = mapper.createObjectNode();
         errorNode.put("code", error.getCode());

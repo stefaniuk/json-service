@@ -148,6 +148,17 @@ public class JsonServiceObject {
     }
 
     /**
+     * Data output type.
+     * 
+     * @author Daniel Stefaniuk
+     */
+    public static enum OutputType {
+
+        JSON_RPC_2_0,
+        JSON;
+    }
+
+    /**
      * Data type
      * 
      * @author Daniel Stefaniuk
@@ -425,6 +436,7 @@ public class JsonServiceObject {
      * 
      * @param request
      * @param requestNode
+     * @param outputType
      * @return
      * @throws IllegalAccessException
      * @throws InvocationTargetException
@@ -432,7 +444,8 @@ public class JsonServiceObject {
      * @throws JsonMappingException
      * @throws IOException
      */
-    protected ObjectNode process(HttpServletRequest request, ObjectNode requestNode) throws IllegalAccessException,
+    protected ObjectNode process(HttpServletRequest request, ObjectNode requestNode, OutputType outputType)
+            throws IllegalAccessException,
             InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
         if(!isInitialized) {
@@ -474,7 +487,16 @@ public class JsonServiceObject {
 
             // invoke method
             try {
-                response = getSuccessResponse(requestNode.get("id").getIntValue(), method.invoke(context, args));
+                if(outputType.equals(OutputType.JSON_RPC_2_0)) {
+                    // JSON-RPC output
+                    response = getJsonRpcSuccessResponse(
+                        requestNode.get("id").getIntValue(),
+                        method.invoke(context, args));
+                }
+                else {
+                    // JSON output
+                    response = getJsonResponse(method.invoke(context, args));
+                }
             }
             catch(IllegalArgumentException e) {
                 throw new JsonServiceException(JsonServiceError.INVALID_PARAMS);
@@ -484,17 +506,71 @@ public class JsonServiceObject {
             Throwable t = e.getCause();
             if(t instanceof JsonServiceException) {
                 JsonServiceException jse = (JsonServiceException) t;
-                response = getErrorResponse(requestNode.get("id").getIntValue(), jse.getError());
+                if(outputType.equals(OutputType.JSON_RPC_2_0)) {
+                    // JSON-RPC error output
+                    response = getJsonRpcErrorResponse(
+                        requestNode.get("id").getIntValue(),
+                        jse.getError());
+                }
+                else {
+                    // TODO: send error message
+                    response = mapper.createObjectNode();
+                    ;
+                }
             }
             else {
                 throw e;
             }
         }
         catch(JsonServiceException e) {
-            response = getErrorResponse(requestNode.get("id").getIntValue(), e.getError());
+            if(outputType.equals(OutputType.JSON_RPC_2_0)) {
+                // JSON-RPC error output
+                response = getJsonRpcErrorResponse(requestNode.get("id").getIntValue(), e.getError());
+            }
+            else {
+                // TODO: send error message
+                response = mapper.createObjectNode();
+                ;
+            }
         }
 
         return response;
+    }
+
+    /**
+     * Processes JSON-RPC request.
+     * 
+     * @param request
+     * @param requestNode
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws JsonParseException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    protected ObjectNode process(HttpServletRequest request, ObjectNode requestNode) throws IllegalAccessException,
+            InvocationTargetException, JsonParseException, JsonMappingException, IOException {
+
+        return process(request, requestNode, OutputType.JSON_RPC_2_0);
+    }
+
+    /**
+     * Returns response.
+     * 
+     * @param result
+     * @return
+     */
+    private ObjectNode getJsonResponse(Object result) {
+
+        // set result
+        if(result instanceof Map<?, ?>) {
+            return toJson((Map<?, ?>) result);
+        }
+        else {
+            // TODO: send error message
+            return mapper.createObjectNode();
+        }
     }
 
     /**
@@ -504,7 +580,7 @@ public class JsonServiceObject {
      * @param result
      * @return
      */
-    private ObjectNode getSuccessResponse(Integer id, Object result) {
+    private ObjectNode getJsonRpcSuccessResponse(Integer id, Object result) {
 
         ObjectNode responseNode = mapper.createObjectNode();
 
@@ -545,7 +621,7 @@ public class JsonServiceObject {
      * @param error
      * @return
      */
-    private ObjectNode getErrorResponse(Integer id, JsonServiceError error) {
+    private ObjectNode getJsonRpcErrorResponse(Integer id, JsonServiceError error) {
 
         ObjectNode errorNode = mapper.createObjectNode();
         errorNode.put("code", error.getCode());

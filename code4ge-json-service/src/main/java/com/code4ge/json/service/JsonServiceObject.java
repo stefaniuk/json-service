@@ -452,7 +452,7 @@ public class JsonServiceObject {
 
             // invoke method
             try {
-                response = getJsonResponse(m.invoke(context));
+                response = getJsonSuccessResponse(m.invoke(context));
             }
             catch(IllegalArgumentException e) {
                 throw new JsonServiceException(JsonServiceError.INVALID_PARAMS);
@@ -461,16 +461,15 @@ public class JsonServiceObject {
         catch(InvocationTargetException e) {
             Throwable t = e.getCause();
             if(t instanceof JsonServiceException) {
-                // TODO: send error message
-                response = mapper.createObjectNode();
+                JsonServiceException jse = (JsonServiceException) t;
+                response = getJsonErrorResponse(jse.getError());
             }
             else {
                 throw e;
             }
         }
         catch(JsonServiceException e) {
-            // TODO: send error message
-            response = mapper.createObjectNode();
+            response = getJsonErrorResponse(e.getError());
         }
 
         return response;
@@ -560,21 +559,33 @@ public class JsonServiceObject {
      * @param result
      * @return
      */
-    private JsonNode getJsonResponse(Object result) {
+    private JsonNode getJsonSuccessResponse(Object result) {
 
         // set result
         if(result instanceof Map<?, ?>) {
             return toJson((Map<?, ?>) result);
         }
         else {
-            try {
-                return new POJONode(result);
-            }
-            catch(Exception e) {
-                // TODO: send error message
-                return mapper.createObjectNode();
-            }
+            return new POJONode(result);
         }
+    }
+
+    /**
+     * Returns error response.
+     * 
+     * @param error
+     * @return
+     */
+    private JsonNode getJsonErrorResponse(JsonServiceError error) {
+
+        ObjectNode errorNode = mapper.createObjectNode();
+        errorNode.put("code", error.getCode());
+        errorNode.put("message", error.getMessage());
+
+        ObjectNode responseNode = mapper.createObjectNode();
+        responseNode.put("error", errorNode);
+
+        return responseNode;
     }
 
     /**

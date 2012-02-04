@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="code4ge-json-service/src/main/java"/>
 	<classpathentry kind="src" path="code4ge-json-service-test/src/main/java"/>
-	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Java JRE 7"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="output" path="code4ge-json-service-test/target/code4ge-code4ge-json-service-test/WEB-INF/classes"/>
 </classpath>

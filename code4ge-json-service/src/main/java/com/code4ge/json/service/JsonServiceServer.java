@@ -18,7 +18,7 @@ import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 /**
- * This is a broker class that passes a request to a registered bean or returns
+ * This is a broker class that passes request to a registered bean or returns
  * service mapping descriptor.
  * 
  * @author Daniel Stefaniuk

@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -682,11 +683,30 @@ public class JsonServiceObject {
         ArrayNode node = mapper.createArrayNode();
 
         for(Object obj: list) {
-            if(obj instanceof Double) {
-                node.add((Double) obj);
-            }
-            else if(obj instanceof Integer) {
-                node.add((Integer) obj);
+            if(obj instanceof Number) {
+                // most probable
+                if(obj instanceof Integer) {
+                    node.add((Integer) obj);
+                }
+                else if(obj instanceof Double) {
+                    node.add((Double) obj);
+                }
+                // others
+                else if(obj instanceof BigDecimal) {
+                    node.add((BigDecimal) obj);
+                }
+                else if(obj instanceof Float) {
+                    node.add((Float) obj);
+                }
+                else if(obj instanceof Long) {
+                    node.add((Long) obj);
+                }
+                else if(obj instanceof Short) {
+                    node.add((Short) obj);
+                }
+                else if(obj instanceof Byte) {
+                    node.add((Byte) obj);
+                }
             }
             else if(obj instanceof Boolean) {
                 node.add((Boolean) obj);
@@ -727,11 +747,30 @@ public class JsonServiceObject {
             String name = (String) key;
             Object obj = map.get(name);
 
-            if(obj instanceof Double) {
-                node.put(name, (Double) obj);
-            }
-            else if(obj instanceof Integer) {
-                node.put(name, (Integer) obj);
+            if(obj instanceof Number) {
+                // most probable
+                if(obj instanceof Integer) {
+                    node.put(name, (Integer) obj);
+                }
+                else if(obj instanceof Double) {
+                    node.put(name, (Double) obj);
+                }
+                // others
+                else if(obj instanceof BigDecimal) {
+                    node.put(name, (BigDecimal) obj);
+                }
+                else if(obj instanceof Float) {
+                    node.put(name, (Float) obj);
+                }
+                else if(obj instanceof Long) {
+                    node.put(name, (Long) obj);
+                }
+                else if(obj instanceof Short) {
+                    node.put(name, (Short) obj);
+                }
+                else if(obj instanceof Byte) {
+                    node.put(name, (Byte) obj);
+                }
             }
             else if(obj instanceof Boolean) {
                 node.put(name, (Boolean) obj);

@@ -1,74 +1,298 @@
 <!DOCTYPE html>
 <html>
-
-  <head>
-    <meta charset='utf-8' />
+<head>
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="JSON Service : JSON-RPC library for Java" />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>JSON Service</title>
-  </head>
-
-  <body>
+    <title>JSON Service - JSON-RPC library for Java</title>
+    <!--<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/shCoreRDark.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/shThemeRDark.css">-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/shCoreEclipse.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/shThemeEclipse.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/main.css">
+    <script type="text/javascript" src="javascripts/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="javascripts/shCore.js"></script>
+    <script type="text/javascript" src="javascripts/shBrushJava.js"></script>
+    <script type="text/javascript" src="javascripts/shBrushJScript.js"></script>
+    <script type="text/javascript" src="javascripts/shBrushXml.js"></script>
+    <script type="text/javascript" src="javascripts/main.js"></script>
+</head>
+<body>
 
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/stefaniuk/json-service">View on GitHub</a>
-
-          <h1 id="project_title">JSON Service</h1>
-          <h2 id="project_tagline">JSON-RPC library for Java</h2>
-
+            <a id="forkme_banner" href="https://github.com/stefaniuk/json-service">View on GitHub</a>
+            <h1 id="project_title">JSON Service</h1>
+            <h2 id="project_tagline">JSON-RPC library for Java</h2>
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/stefaniuk/json-service/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/stefaniuk/json-service/tarball/master">Download this project as a tar.gz file</a>
+                <a class="zip_download_link" href="https://github.com/stefaniuk/com.code4ge.json.service/zipball/master">Download this project as a .zip file</a>
+                <a class="tar_download_link" href="https://github.com/stefaniuk/com.code4ge.json.service/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
 
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+        <section id="main_content" class="inner">
+            <h3>Welcome to GitHub Pages.</h3>
+            <p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+            <pre><code>$ cd your_repo_root/repo_name
+            $ git fetch origin
+            $ git checkout gh-pages
+            </code></pre>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+            <pre class="brush: java; ">
+                package com.code4ge.json.service.test;
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+                import java.io.IOException;
+                import java.text.SimpleDateFormat;
+                import java.util.Calendar;
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+                import javax.servlet.http.HttpServlet;
+                import javax.servlet.http.HttpServletRequest;
+                import javax.servlet.http.HttpServletResponse;
 
-<h3>Designer Templates</h3>
+                import com.code4ge.json.service.JsonServiceServer;
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+                public class TestServlet extends HttpServlet {
 
-<h3>Rather Drive Stick?</h3>
+                    private static final long serialVersionUID = 1L;
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+                    private static JsonServiceServer service = new JsonServiceServer();
 
-<h3>Authors and Contributors</h3>
+                    static {
+                        service.register(Service.class);
+                    }
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+                    @Override
+                    public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
-<h3>Support or Contact</h3>
+                        response.setCharacterEncoding("UTF-8");
+                        response.setContentType("application/json");
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
+                        try {
+                            service.getServiceMap(Service.class, response.getOutputStream());
+                            response.setStatus(200);
+                        }
+                        catch(IOException e) {
+                            e.printStackTrace(System.err);
+                            response.setStatus(500);
+                        }
+                    }
+
+                    @Override
+                    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+
+                        response.setCharacterEncoding("UTF-8");
+                        response.setContentType("application/json");
+
+                        String date = (new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")).format(Calendar.getInstance().getTime());
+
+                        response.setHeader("Expires", "Mon, 01 Jan 2000 00:00:00 GMT");
+                        response.setHeader("Last-Modified", date);
+                        response.setHeader("Cache-Control", "no-cache");
+
+                        try {
+                            service.handle(Service.class, request, response.getOutputStream());
+                            response.setStatus(200);
+                        }
+                        catch(IOException e) {
+                            e.printStackTrace(System.err);
+                            response.setStatus(500);
+                        }
+                    }
+
+
+                    @Override
+                    public void doPut(HttpServletRequest request, HttpServletResponse response) {
+
+                        response.setHeader("Content-Type", "text/html");
+                        response.setStatus(405);
+                    }
+
+                    @Override
+                    public void doDelete(HttpServletRequest request, HttpServletResponse response) {
+
+                        response.setHeader("Content-Type", "text/html");
+                        response.setStatus(405);
+                    }
+
+                }
+            </pre>
+
+            <pre class="brush: javascript">
+                define([
+                    'dojo',
+                    'code4ge/main',
+                    'dojo/_base/declare',
+                    'dojox/rpc/Service',
+                    'dojox/rpc/JsonRPC'
+                ], function(dojo, code4ge, declare, Service) {
+
+                var JsonRpc = declare('code4ge.data.JsonRpc', [ Service ], {
+
+                    // module:
+                    //        code4ge/data/JsonRpc
+                    // summary:
+                    //        This is an extended class of dojox.rpc.Service, that allows to
+                    //        communicate with back-end application using JSON-RPC protocol.
+
+                    sync: false,
+
+                    _noTrailingSlash: true,
+
+                    preamble: function(args) {
+
+                        if(!dojo.isString(args)) {
+
+                            if(typeof(args.noTrailingSlash) != 'undefined') {
+                                this._noTrailingSlash = args.noTrailingSlash;
+                            }
+
+                            // add trailing slash to the url
+                            if(!this._noTrailingSlash && args.url.lastIndexOf('/') != args.url.length - 1) {
+                                args.url = args.url + '/';
+                            }
+
+                            this.sync = args.sync || false;
+
+                            if(dojo.isObject(args.smd)) {
+                                dojo.mixin(args.smd, {
+                                    target: args.url
+                                });
+                            }
+                        }
+
+                        return [ args.smd || args.url || args ];
+                    },
+
+                    _getRequest: function(method, args) {
+
+                        var request = this.inherited(arguments);
+
+                        request.sync = this.sync;
+
+                        return request;
+                    }
+
+                });
+
+                /* create a registry of communication channels over JSON-RPC protocol */
+                JsonRpc.prototype.registry = {
+
+                    map: {},
+
+                    add: function(args) {
+                        var url = args.url || args;
+                        this.map[url] = new JsonRpc({
+                            url: url,
+                            smd: args.smd,
+                            sync: args.sync || false,
+                            noTrailingSlash: typeof(args.noTrailingSlash) != 'undefined' ? args.noTrailingSlash : true
+                        });
+                    },
+
+                    get: function(args) {
+                        var url = args.url || args;
+                        if(!this.map[url]) {
+                            this.add(args);
+                        }
+                        return this.map[url];
+                    }
+
+                };
+                code4ge.set('jsonrpc.registry', JsonRpc.prototype.registry);
+
+                return JsonRpc;
+
+                });
+            </pre>
+
+            <pre class="brush: html">
+                &lt;html&gt;
+                &lt;head&gt;
+                    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+                    &lt;title&gt;Code4ge JSF - Test: JSON-RPC&lt;/title&gt;
+                    &lt;script type=&quot;text/javascript&quot;
+                        src=&quot;../../../dojo/dojo.js&quot;
+                        data-dojo-config=&quot;async: 1&quot;
+                    &gt;&lt;/script&gt;
+                    &lt;script type=&quot;text/javascript&quot;&gt;
+                        require([
+                            'dojo',
+                            'code4ge/main',
+                            'code4ge/data/JsonRPC'
+                        ],
+                        function(dojo, code4ge) {
+                            var smd = {
+                                SMDVersion: '2.0',
+                                additionalParameters: 'false',
+                                contentType: 'application/json',
+                                envelope: 'JSON-RPC-2.0',
+                                transport: 'POST',
+                                services: {
+                                    call: {
+                                        parameters: [{ type: 'object' }],
+                                        returns: { type: 'any' }
+                                    }
+                                }
+                            };
+                            dojo.ready(function() {
+
+                                var registry = code4ge.get('jsonrpc.registry');
+                                registry.add({ url: 'resources/jsonrpc-service.json', smd: smd });
+
+                                var service1 = registry.get('resources/jsonrpc-service.json');
+                                service1.sync = true;
+                                service1.call(0xF1, 'This is just a test 1.').addCallback(function(result) {
+                                    console.log('Response: ', result);
+                                });
+
+                                var service2 = registry.get('resources/jsonrpc-service.json');
+                                service2.call(0xF2, 'This is just a test 2.').addCallback(function(result) {
+                                    console.log('Response: ', result);
+                                });
+
+                                // SMD test
+                                var service3 = registry.get({ url: 'resources/jsonrpc-smd.json' });
+                                service3.call(0xF3, 'This is just a test 3.').addCallback(function(result) {
+                                    console.log('Response: ', result);
+                                });
+
+                            });
+                        });
+                    &lt;/script&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+            </pre>
+
+            <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+            <h3>Designer Templates</h3>
+            <p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+            <h3>Rather Drive Stick?</h3>
+            <p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+            <h3>Authors and Contributors</h3>
+            <p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+            <h3>Support or Contact</h3>
+            <p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+        </section>
     </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">JSON Service maintained by <a href="https://github.com/stefaniuk">stefaniuk</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
+        <footer class="inner">
+            <p class="copyright">JSON Service maintained by <a href="https://github.com/stefaniuk">stefaniuk</a></p>
+            <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        </footer>
     </div>
 
-    
+    <!-- SyntaxHighlighter -->
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
 
-  </body>
+</body>
 </html>

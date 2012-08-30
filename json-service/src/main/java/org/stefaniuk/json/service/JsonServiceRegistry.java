@@ -23,22 +23,22 @@ import org.codehaus.jackson.node.ObjectNode;
  * 
  * @author Daniel Stefaniuk
  */
-public class JsonServiceServer {
+public class JsonServiceRegistry {
 
     private static ObjectMapper mapper = new ObjectMapper();
 
-    private Map<String, JsonServiceObject> registry =
-        Collections.synchronizedMap(new HashMap<String, JsonServiceObject>());
+    private Map<String, JsonServiceTarget> registry =
+        Collections.synchronizedMap(new HashMap<String, JsonServiceTarget>());
 
     /**
      * @param clazz
      * @return
      */
-    public JsonServiceServer register(Class<?> clazz) {
+    public JsonServiceRegistry register(Class<?> clazz) {
 
         String name = clazz.getName();
         if(!registry.containsKey(name)) {
-            registry.put(name, new JsonServiceObject(clazz));
+            registry.put(name, new JsonServiceTarget(clazz));
         }
 
         return this;
@@ -48,11 +48,11 @@ public class JsonServiceServer {
      * @param obj
      * @return
      */
-    public JsonServiceServer register(Object obj) {
+    public JsonServiceRegistry register(Object obj) {
 
         String name = obj.getClass().getName();
         if(!registry.containsKey(name)) {
-            registry.put(name, new JsonServiceObject(obj));
+            registry.put(name, new JsonServiceTarget(obj));
         }
 
         return this;
@@ -62,7 +62,7 @@ public class JsonServiceServer {
      * @param clazz
      * @return
      */
-    public JsonServiceServer unregister(Class<?> clazz) {
+    public JsonServiceRegistry unregister(Class<?> clazz) {
 
         String name = clazz.getName();
         registry.remove(name);
@@ -74,7 +74,7 @@ public class JsonServiceServer {
      * @param obj
      * @return
      */
-    public JsonServiceServer unregister(Object obj) {
+    public JsonServiceRegistry unregister(Object obj) {
 
         String name = obj.getClass().getName();
         registry.remove(name);
@@ -86,7 +86,7 @@ public class JsonServiceServer {
      * @param clazz
      * @return
      */
-    private JsonServiceObject lookup(Class<?> clazz) {
+    private JsonServiceTarget lookup(Class<?> clazz) {
 
         return registry.get(clazz.getName());
     }
@@ -203,7 +203,7 @@ public class JsonServiceServer {
      * @throws InvocationTargetException
      * @throws JsonServiceException
      */
-    private void handleNode(HttpServletRequest request, OutputStream os, JsonServiceObject service, String method,
+    private void handleNode(HttpServletRequest request, OutputStream os, JsonServiceTarget service, String method,
             Object... args)
             throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
             InvocationTargetException, JsonServiceException {
@@ -223,7 +223,7 @@ public class JsonServiceServer {
      * @throws InvocationTargetException
      * @throws JsonServiceException
      */
-    private void handleNode(HttpServletRequest request, JsonNode requestNode, OutputStream os, JsonServiceObject service)
+    private void handleNode(HttpServletRequest request, JsonNode requestNode, OutputStream os, JsonServiceTarget service)
             throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
             InvocationTargetException, JsonServiceException {
 
@@ -251,7 +251,7 @@ public class JsonServiceServer {
      * @throws JsonServiceException
      */
     private void handleArray(HttpServletRequest request, ArrayNode requestNode, OutputStream os,
-            JsonServiceObject service)
+            JsonServiceTarget service)
             throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
             InvocationTargetException, JsonServiceException {
 
@@ -272,7 +272,7 @@ public class JsonServiceServer {
      * @throws JsonMappingException
      * @throws IOException
      */
-    private void handleObject(HttpServletRequest request, OutputStream os, JsonServiceObject service, String method,
+    private void handleObject(HttpServletRequest request, OutputStream os, JsonServiceTarget service, String method,
             Object... args)
             throws IllegalAccessException, InvocationTargetException, JsonGenerationException, JsonMappingException,
             IOException {
@@ -294,7 +294,7 @@ public class JsonServiceServer {
      * @throws IOException
      */
     private void handleObject(HttpServletRequest request, ObjectNode requestNode, OutputStream os,
-            JsonServiceObject service)
+            JsonServiceTarget service)
             throws IllegalAccessException, InvocationTargetException, JsonGenerationException, JsonMappingException,
             IOException {
 

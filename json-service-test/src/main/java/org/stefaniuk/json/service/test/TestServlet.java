@@ -8,14 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.stefaniuk.json.service.JsonServiceServer;
+import org.stefaniuk.json.service.JsonServiceRegistry;
 
 
 public class TestServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static JsonServiceServer service = new JsonServiceServer();
+    private static JsonServiceRegistry service = new JsonServiceRegistry();
 
     static {
         service.register(Service.class);

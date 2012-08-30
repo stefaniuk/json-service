@@ -30,7 +30,7 @@ import org.codehaus.jackson.node.POJONode;
  * 
  * @author Daniel Stefaniuk
  */
-public class JsonServiceObject {
+public class JsonServiceTarget {
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -195,7 +195,7 @@ public class JsonServiceObject {
      * 
      * @param clazz
      */
-    public JsonServiceObject(Class<?> clazz) {
+    public JsonServiceTarget(Class<?> clazz) {
 
         this.clazz = clazz;
     }
@@ -205,7 +205,7 @@ public class JsonServiceObject {
      * 
      * @param obj
      */
-    public JsonServiceObject(Object obj) {
+    public JsonServiceTarget(Object obj) {
 
         this.clazz = obj.getClass();
         this.context = obj;
@@ -217,7 +217,7 @@ public class JsonServiceObject {
      * @param transport
      * @return
      */
-    public JsonServiceObject setTransport(Transport transport) {
+    public JsonServiceTarget setTransport(Transport transport) {
 
         this.transport = transport;
 
@@ -240,7 +240,7 @@ public class JsonServiceObject {
      * @param contentType
      * @return
      */
-    public JsonServiceObject setContentType(ContentType contentType) {
+    public JsonServiceTarget setContentType(ContentType contentType) {
 
         this.contentType = contentType;
 
@@ -263,7 +263,7 @@ public class JsonServiceObject {
      * @param envelope
      * @return
      */
-    public JsonServiceObject setEnvelope(Envelope envelope) {
+    public JsonServiceTarget setEnvelope(Envelope envelope) {
 
         this.envelope = envelope;
 
@@ -286,7 +286,7 @@ public class JsonServiceObject {
      * @param version
      * @return
      */
-    public JsonServiceObject setVersion(Version version) {
+    public JsonServiceTarget setVersion(Version version) {
 
         this.version = version;
 

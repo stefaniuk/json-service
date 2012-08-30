@@ -1,4 +1,4 @@
-package com.code4ge.json.service;
+package org.stefaniuk.json.service;
 
 /**
  * JSON Service error definitions.

@@ -1,4 +1,4 @@
-package com.code4ge.json.service;
+package org.stefaniuk.json.service;
 
 import java.io.BufferedOutputStream;
 import java.io.FileReader;

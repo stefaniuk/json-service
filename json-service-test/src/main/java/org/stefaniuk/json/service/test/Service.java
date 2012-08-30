@@ -1,8 +1,9 @@
-package com.code4ge.json.service.test;
+package org.stefaniuk.json.service.test;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.code4ge.json.service.JsonService;
+import org.stefaniuk.json.service.JsonService;
+
 
 public class Service {
 

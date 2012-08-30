@@ -1,4 +1,4 @@
-package com.code4ge.json.service;
+package org.stefaniuk.json.service;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -6,9 +6,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.code4ge.json.service.JsonServiceObject.ContentType;
-import com.code4ge.json.service.JsonServiceObject.Envelope;
-import com.code4ge.json.service.JsonServiceObject.Transport;
+import org.stefaniuk.json.service.JsonServiceObject.ContentType;
+import org.stefaniuk.json.service.JsonServiceObject.Envelope;
+import org.stefaniuk.json.service.JsonServiceObject.Transport;
+
 
 /**
  * JSON Service annotation.

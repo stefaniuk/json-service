@@ -1,4 +1,4 @@
-package com.code4ge.json.service.test;
+package org.stefaniuk.json.service.test;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.code4ge.json.service.JsonServiceServer;
+import org.stefaniuk.json.service.JsonServiceServer;
+
 
 public class TestServlet extends HttpServlet {
 

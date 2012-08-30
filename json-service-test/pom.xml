@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.code4ge</groupId>
+    <groupId>org.stefaniuk</groupId>
     <artifactId>json-service-test</artifactId>
     <version>1.0.2</version>
     <packaging>war</packaging>
@@ -10,8 +10,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <servlet.api.version>6.0</servlet.api.version>
-        <jackson.version>1.9.2</jackson.version>
-        <springframework.version>3.1.0.RELEASE</springframework.version>
+        <jackson.version>1.9.9</jackson.version>
+        <springframework.version>3.1.2.RELEASE</springframework.version>
         <junit.version>4.10</junit.version>
     </properties>
     <repositories>
@@ -29,7 +29,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.code4ge</groupId>
+            <groupId>org.stefaniuk</groupId>
             <artifactId>json-service</artifactId>
             <version>1.0.2</version>
         </dependency>

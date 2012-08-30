@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.code4ge</groupId>
-    <artifactId>code4ge-json-service-test</artifactId>
+    <artifactId>json-service</artifactId>
     <version>1.0.2</version>
-    <packaging>war</packaging>
-    <name>code4ge-json-service-test</name>
-    <url>https://github.com/stefaniuk/com.code4ge.json.service</url>
+    <packaging>jar</packaging>
+    <name>json-service</name>
+    <url>https://github.com/stefaniuk/json-service</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <servlet.api.version>6.0</servlet.api.version>
@@ -27,11 +27,6 @@
             <artifactId>javaee-web-api</artifactId>
             <version>${servlet.api.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.code4ge</groupId>
-            <artifactId>code4ge-json-service</artifactId>
-            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
@@ -56,7 +51,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>code4ge-json-service-test</finalName>
+        <finalName>json-service-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -65,7 +60,14 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3</version>
             </plugin>
         </plugins>
     </build>

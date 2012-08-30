@@ -6,7 +6,7 @@
     <version>1.0.2</version>
     <packaging>pom</packaging>
     <name>parent</name>
-    <url>https://github.com/stefaniuk/com.code4ge.json.service</url>
+    <url>https://github.com/stefaniuk/json-service</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <servlet.api.version>6.0</servlet.api.version>
@@ -15,8 +15,8 @@
         <junit.version>4.10</junit.version>
     </properties>
     <modules>
-        <module>code4ge-json-service</module>
-        <module>code4ge-json-service-test</module>
+        <module>json-service</module>
+        <module>json-service-test</module>
     </modules>
     <repositories>
         <repository>

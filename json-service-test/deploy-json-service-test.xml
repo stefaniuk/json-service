@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context
+    docBase="d:\projects\json-service\json-service-test\target\json-service-test\"
+    workDir="d:\projects\json-service\json-service-test\target\json-service-test\WEB-INF\work\"
+    path="/json-service-test"
+    privileged="true"
+    reloadable="true"
+/>

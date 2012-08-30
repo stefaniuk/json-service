@@ -39,6 +39,234 @@
             $ git fetch origin
             $ git checkout gh-pages
             </code></pre>
+
+            <pre class="brush: java; ">
+                package com.code4ge.json.service.test;
+
+                import java.io.IOException;
+                import java.text.SimpleDateFormat;
+                import java.util.Calendar;
+
+                import javax.servlet.http.HttpServlet;
+                import javax.servlet.http.HttpServletRequest;
+                import javax.servlet.http.HttpServletResponse;
+
+                import com.code4ge.json.service.JsonServiceServer;
+
+                public class TestServlet extends HttpServlet {
+
+                    private static final long serialVersionUID = 1L;
+
+                    private static JsonServiceServer service = new JsonServiceServer();
+
+                    static {
+                        service.register(Service.class);
+                    }
+
+                    @Override
+                    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+
+                        response.setCharacterEncoding("UTF-8");
+                        response.setContentType("application/json");
+
+                        try {
+                            service.getServiceMap(Service.class, response.getOutputStream());
+                            response.setStatus(200);
+                        }
+                        catch(IOException e) {
+                            e.printStackTrace(System.err);
+                            response.setStatus(500);
+                        }
+                    }
+
+                    @Override
+                    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+
+                        response.setCharacterEncoding("UTF-8");
+                        response.setContentType("application/json");
+
+                        String date = (new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")).format(Calendar.getInstance().getTime());
+
+                        response.setHeader("Expires", "Mon, 01 Jan 2000 00:00:00 GMT");
+                        response.setHeader("Last-Modified", date);
+                        response.setHeader("Cache-Control", "no-cache");
+
+                        try {
+                            service.handle(Service.class, request, response.getOutputStream());
+                            response.setStatus(200);
+                        }
+                        catch(IOException e) {
+                            e.printStackTrace(System.err);
+                            response.setStatus(500);
+                        }
+                    }
+
+
+                    @Override
+                    public void doPut(HttpServletRequest request, HttpServletResponse response) {
+
+                        response.setHeader("Content-Type", "text/html");
+                        response.setStatus(405);
+                    }
+
+                    @Override
+                    public void doDelete(HttpServletRequest request, HttpServletResponse response) {
+
+                        response.setHeader("Content-Type", "text/html");
+                        response.setStatus(405);
+                    }
+
+                }
+            </pre>
+
+            <pre class="brush: javascript">
+                define([
+                    'dojo',
+                    'code4ge/main',
+                    'dojo/_base/declare',
+                    'dojox/rpc/Service',
+                    'dojox/rpc/JsonRPC'
+                ], function(dojo, code4ge, declare, Service) {
+
+                var JsonRpc = declare('code4ge.data.JsonRpc', [ Service ], {
+
+                    // module:
+                    //        code4ge/data/JsonRpc
+                    // summary:
+                    //        This is an extended class of dojox.rpc.Service, that allows to
+                    //        communicate with back-end application using JSON-RPC protocol.
+
+                    sync: false,
+
+                    _noTrailingSlash: true,
+
+                    preamble: function(args) {
+
+                        if(!dojo.isString(args)) {
+
+                            if(typeof(args.noTrailingSlash) != 'undefined') {
+                                this._noTrailingSlash = args.noTrailingSlash;
+                            }
+
+                            // add trailing slash to the url
+                            if(!this._noTrailingSlash && args.url.lastIndexOf('/') != args.url.length - 1) {
+                                args.url = args.url + '/';
+                            }
+
+                            this.sync = args.sync || false;
+
+                            if(dojo.isObject(args.smd)) {
+                                dojo.mixin(args.smd, {
+                                    target: args.url
+                                });
+                            }
+                        }
+
+                        return [ args.smd || args.url || args ];
+                    },
+
+                    _getRequest: function(method, args) {
+
+                        var request = this.inherited(arguments);
+
+                        request.sync = this.sync;
+
+                        return request;
+                    }
+
+                });
+
+                /* create a registry of communication channels over JSON-RPC protocol */
+                JsonRpc.prototype.registry = {
+
+                    map: {},
+
+                    add: function(args) {
+                        var url = args.url || args;
+                        this.map[url] = new JsonRpc({
+                            url: url,
+                            smd: args.smd,
+                            sync: args.sync || false,
+                            noTrailingSlash: typeof(args.noTrailingSlash) != 'undefined' ? args.noTrailingSlash : true
+                        });
+                    },
+
+                    get: function(args) {
+                        var url = args.url || args;
+                        if(!this.map[url]) {
+                            this.add(args);
+                        }
+                        return this.map[url];
+                    }
+
+                };
+                code4ge.set('jsonrpc.registry', JsonRpc.prototype.registry);
+
+                return JsonRpc;
+
+                });
+            </pre>
+
+            <pre class="brush: html">
+                &lt;html&gt;
+                &lt;head&gt;
+                    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+                    &lt;title&gt;Code4ge JSF - Test: JSON-RPC&lt;/title&gt;
+                    &lt;script type=&quot;text/javascript&quot;
+                        src=&quot;../../../dojo/dojo.js&quot;
+                        data-dojo-config=&quot;async: 1&quot;
+                    &gt;&lt;/script&gt;
+                    &lt;script type=&quot;text/javascript&quot;&gt;
+                        require([
+                            'dojo',
+                            'code4ge/main',
+                            'code4ge/data/JsonRPC'
+                        ],
+                        function(dojo, code4ge) {
+                            var smd = {
+                                SMDVersion: '2.0',
+                                additionalParameters: 'false',
+                                contentType: 'application/json',
+                                envelope: 'JSON-RPC-2.0',
+                                transport: 'POST',
+                                services: {
+                                    call: {
+                                        parameters: [{ type: 'object' }],
+                                        returns: { type: 'any' }
+                                    }
+                                }
+                            };
+                            dojo.ready(function() {
+
+                                var registry = code4ge.get('jsonrpc.registry');
+                                registry.add({ url: 'resources/jsonrpc-service.json', smd: smd });
+
+                                var service1 = registry.get('resources/jsonrpc-service.json');
+                                service1.sync = true;
+                                service1.call(0xF1, 'This is just a test 1.').addCallback(function(result) {
+                                    console.log('Response: ', result);
+                                });
+
+                                var service2 = registry.get('resources/jsonrpc-service.json');
+                                service2.call(0xF2, 'This is just a test 2.').addCallback(function(result) {
+                                    console.log('Response: ', result);
+                                });
+
+                                // SMD test
+                                var service3 = registry.get({ url: 'resources/jsonrpc-smd.json' });
+                                service3.call(0xF3, 'This is just a test 3.').addCallback(function(result) {
+                                    console.log('Response: ', result);
+                                });
+
+                            });
+                        });
+                    &lt;/script&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+            </pre>
+
             <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
             <h3>Designer Templates</h3>
             <p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
@@ -58,6 +286,11 @@
             <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
         </footer>
     </div>
+
+    <!-- SyntaxHighlighter -->
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
 
 </body>
 </html>

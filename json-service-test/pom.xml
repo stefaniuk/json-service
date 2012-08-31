@@ -9,9 +9,17 @@
     <url>https://github.com/stefaniuk/json-service</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Servlet API -->
         <servlet.api.version>6.0</servlet.api.version>
+        <!-- SLF4J -->
+        <org.slf4j.version>1.6.6</org.slf4j.version>
+        <!-- log4j -->
+        <log4j.version>1.2.17</log4j.version>
+        <!-- Jackson -->
         <jackson.version>1.9.9</jackson.version>
+        <!-- Spring Framework -->
         <springframework.version>3.1.2.RELEASE</springframework.version>
+        <!-- JUnit -->
         <junit.version>4.10</junit.version>
     </properties>
     <repositories>
@@ -22,17 +30,36 @@
         </repository>
     </repositories>
     <dependencies>
+        <!-- Servlet API -->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>${servlet.api.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- SLF4J -->
         <dependency>
-            <groupId>org.stefaniuk</groupId>
-            <artifactId>json-service</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${org.slf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${org.slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${org.slf4j.version}</version>
+        </dependency>
+        <!-- log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <!-- Jackson -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-lgpl</artifactId>
@@ -43,17 +70,27 @@
             <artifactId>jackson-mapper-lgpl</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <!-- Spring Framework -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${springframework.version}</version>
         </dependency>
+        <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- JSON Service -->
+        <dependency>
+            <groupId>org.stefaniuk</groupId>
+            <artifactId>json-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>json-service-test</finalName>

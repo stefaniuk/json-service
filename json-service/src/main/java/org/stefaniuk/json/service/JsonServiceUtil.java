@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.JsonFactory;
@@ -16,24 +17,43 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 /**
- * Utility methods.
+ * <p>
+ * JSON service utility methods.
+ * </p>
  * 
  * @author Daniel Stefaniuk
+ * @version 1.0.0
+ * @since 2010/09/20
  */
 public class JsonServiceUtil {
 
+    private final Logger logger = LoggerFactory.getLogger(JsonServiceUtil.class);
+
+    /**
+     * This object provides functionality for conversion between Java objects
+     * and JSON.
+     */
     private static ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * The main factory class of Jackson package, used to configure and
+     * construct reader and writer instances.
+     */
     private static JsonFactory jsonFactory = new JsonFactory();
 
     /**
-     * @param bos
-     * @param response
+     * This method sets HTTP response headers adequate for Service Mapping
+     * Description.
+     * 
+     * @param bos Output stream
+     * @param response HTTP response object
      */
     public static void setHeadersForServiceMap(BufferedOutputStream bos, HttpServletResponse response) {
 
@@ -43,8 +63,10 @@ public class JsonServiceUtil {
     }
 
     /**
-     * @param bos
-     * @param response
+     * This method sets HTTP response headers adequate for JSON-RPC method call.
+     * 
+     * @param bos Output stream
+     * @param response HTTP response object
      */
     public static void setHeadersForMethodCall(BufferedOutputStream bos, HttpServletResponse response) {
 
@@ -59,9 +81,11 @@ public class JsonServiceUtil {
     }
 
     /**
-     * @param bos
-     * @param response
-     * @param status
+     * This method sets HTTP response headers adequate for JSON-RPC method call.
+     * 
+     * @param bos Output stream
+     * @param response HTTP response object
+     * @param status HTTP response code
      */
     public static void setHeadersForMethodCall(BufferedOutputStream bos, HttpServletResponse response, int status) {
 
@@ -76,8 +100,11 @@ public class JsonServiceUtil {
     }
 
     /**
-     * @param bos
-     * @return
+     * This method sets HTTP response headers adequate for Service Mapping
+     * Description and returns ResponseEntity to be used by Spring Framework.
+     * 
+     * @param bos Output stream
+     * @return Returns ResponseEntity to be used by Spring Framework.
      */
     public static ResponseEntity<String> getResponseEntityForServiceMap(BufferedOutputStream bos) {
 
@@ -90,8 +117,11 @@ public class JsonServiceUtil {
     }
 
     /**
-     * @param bos
-     * @return
+     * This method sets HTTP response headers adequate for JSON-RPC method call
+     * and returns ResponseEntity to be used by Spring Framework.
+     * 
+     * @param bos Output stream
+     * @return Returns ResponseEntity to be used by Spring Framework.
      */
     public static ResponseEntity<String> getResponseEntityForMethodCall(BufferedOutputStream bos) {
 
@@ -109,9 +139,12 @@ public class JsonServiceUtil {
     }
 
     /**
-     * @param bos
-     * @param status
-     * @return
+     * This method sets HTTP response headers adequate for JSON-RPC method call
+     * and returns ResponseEntity to be used by Spring Framework.
+     * 
+     * @param bos Output stream
+     * @param status HTTP response code
+     * @return Returns ResponseEntity to be used by Spring Framework.
      */
     public static ResponseEntity<String> getResponseEntityForMethodCall(BufferedOutputStream bos, HttpStatus status) {
 
@@ -129,10 +162,40 @@ public class JsonServiceUtil {
     }
 
     /**
+     * Handles HTTP request.
+     * 
+     * @param service Service registry object
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @param clazz Class
+     * @return Returns ResponseEntity to be used by Spring Framework.
+     * @throws IOException
+     */
+    public static ResponseEntity<String> handle(JsonServiceRegistry service, HttpServletRequest request,
+            HttpServletResponse response, Class<?> clazz) throws IOException {
+
+        ResponseEntity<String> re = null;
+
+        BufferedOutputStream bos = (BufferedOutputStream) service.handle(request, response, clazz);
+        String method = request.getMethod();
+        if(method.equals("GET")) {
+            re = JsonServiceUtil.getResponseEntityForServiceMap(bos);
+        }
+        else {
+            re = JsonServiceUtil.getResponseEntityForMethodCall(bos);
+
+        }
+
+        return re;
+    }
+
+    /**
+     * Creates Java object from JSON.
+     * 
      * @param <T>
-     * @param jsonAsString
-     * @param pojoClass
-     * @return
+     * @param jsonAsString JSON string
+     * @param pojoClass POJO class
+     * @return Object
      * @throws JsonMappingException
      * @throws JsonParseException
      * @throws IOException

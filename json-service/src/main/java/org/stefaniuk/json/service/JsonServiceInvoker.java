@@ -23,14 +23,18 @@ import org.codehaus.jackson.map.type.TypeFactory;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.node.POJONode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * This class is responsible for building service mapping descriptor and
+ * This class is responsible for building service mapping description and
  * processes JSON-RPC request.
  * 
  * @author Daniel Stefaniuk
  */
-public class JsonServiceTarget {
+public class JsonServiceInvoker {
+
+    private final Logger logger = LoggerFactory.getLogger(JsonServiceInvoker.class);
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -195,7 +199,7 @@ public class JsonServiceTarget {
      * 
      * @param clazz
      */
-    public JsonServiceTarget(Class<?> clazz) {
+    public JsonServiceInvoker(Class<?> clazz) {
 
         this.clazz = clazz;
     }
@@ -205,7 +209,7 @@ public class JsonServiceTarget {
      * 
      * @param obj
      */
-    public JsonServiceTarget(Object obj) {
+    public JsonServiceInvoker(Object obj) {
 
         this.clazz = obj.getClass();
         this.context = obj;
@@ -217,7 +221,7 @@ public class JsonServiceTarget {
      * @param transport
      * @return
      */
-    public JsonServiceTarget setTransport(Transport transport) {
+    public JsonServiceInvoker setTransport(Transport transport) {
 
         this.transport = transport;
 
@@ -240,7 +244,7 @@ public class JsonServiceTarget {
      * @param contentType
      * @return
      */
-    public JsonServiceTarget setContentType(ContentType contentType) {
+    public JsonServiceInvoker setContentType(ContentType contentType) {
 
         this.contentType = contentType;
 
@@ -263,7 +267,7 @@ public class JsonServiceTarget {
      * @param envelope
      * @return
      */
-    public JsonServiceTarget setEnvelope(Envelope envelope) {
+    public JsonServiceInvoker setEnvelope(Envelope envelope) {
 
         this.envelope = envelope;
 
@@ -286,7 +290,7 @@ public class JsonServiceTarget {
      * @param version
      * @return
      */
-    public JsonServiceTarget setVersion(Version version) {
+    public JsonServiceInvoker setVersion(Version version) {
 
         this.version = version;
 
@@ -304,7 +308,7 @@ public class JsonServiceTarget {
     }
 
     /**
-     * Builds service mapping descriptor.
+     * Builds service mapping description.
      */
     private void init() {
 
@@ -408,7 +412,7 @@ public class JsonServiceTarget {
     }
 
     /**
-     * Returns service mapping descriptor as JSON object.
+     * Returns service mapping description as JSON object.
      * 
      * @return
      */
@@ -419,76 +423,6 @@ public class JsonServiceTarget {
         }
 
         return smd;
-    }
-
-    /**
-     * Processes simple request.
-     * 
-     * @param request
-     * @param method
-     * @return
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws JsonParseException
-     * @throws JsonMappingException
-     * @throws IOException
-     */
-    protected JsonNode process(HttpServletRequest request, String method, Object... args)
-            throws IllegalAccessException,
-            InvocationTargetException, JsonParseException, JsonMappingException, IOException {
-
-        if(!isInitialized) {
-            init();
-        }
-
-        JsonNode response = null;
-
-        try {
-
-            // get method
-            Method m = methods.get(method);
-            if(m == null) {
-                throw new JsonServiceException(JsonServiceError.METHOD_NOT_FOUND);
-            }
-
-            // get parameters
-            ArrayList<Object> temp = new ArrayList<Object>();
-            Type[] types = m.getGenericParameterTypes();
-            int i = 0;
-            for(Type type: types) {
-                if(type.equals(HttpServletRequest.class)) {
-                    temp.add(request);
-                }
-                else {
-                    temp.add(args[i++]);
-                }
-            }
-            Object[] arguments = new Object[temp.size()];
-            temp.toArray(arguments);
-
-            // invoke method
-            try {
-                response = getJsonSuccessResponse(m.invoke(context, arguments));
-            }
-            catch(IllegalArgumentException e) {
-                throw new JsonServiceException(JsonServiceError.INVALID_PARAMS);
-            }
-        }
-        catch(InvocationTargetException e) {
-            Throwable t = e.getCause();
-            if(t instanceof JsonServiceException) {
-                JsonServiceException jse = (JsonServiceException) t;
-                response = getJsonErrorResponse(jse.getError());
-            }
-            else {
-                throw e;
-            }
-        }
-        catch(JsonServiceException e) {
-            response = getJsonErrorResponse(e.getError());
-        }
-
-        return response;
     }
 
     /**
@@ -545,6 +479,7 @@ public class JsonServiceTarget {
             temp.toArray(args);
 
             // invoke method
+            logger.debug("JSON-RPC method call: " + method.getClass().getName() + "." + method.getName());
             try {
                 response = getJsonRpcSuccessResponse(requestNode.get("id").getIntValue(), method.invoke(context, args));
             }
@@ -564,6 +499,77 @@ public class JsonServiceTarget {
         }
         catch(JsonServiceException e) {
             response = getJsonRpcErrorResponse(requestNode.get("id").getIntValue(), e.getError());
+        }
+
+        return response;
+    }
+
+    /**
+     * Processes request.
+     * 
+     * @param request
+     * @param method
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws JsonParseException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    protected JsonNode process(HttpServletRequest request, String method, Object... args)
+            throws IllegalAccessException,
+            InvocationTargetException, JsonParseException, JsonMappingException, IOException {
+
+        if(!isInitialized) {
+            init();
+        }
+
+        JsonNode response = null;
+
+        try {
+
+            // get method
+            Method m = methods.get(method);
+            if(m == null) {
+                throw new JsonServiceException(JsonServiceError.METHOD_NOT_FOUND);
+            }
+
+            // get parameters
+            ArrayList<Object> temp = new ArrayList<Object>();
+            Type[] types = m.getGenericParameterTypes();
+            int i = 0;
+            for(Type type: types) {
+                if(type.equals(HttpServletRequest.class)) {
+                    temp.add(request);
+                }
+                else {
+                    temp.add(args[i++]);
+                }
+            }
+            Object[] arguments = new Object[temp.size()];
+            temp.toArray(arguments);
+
+            // invoke method
+            logger.debug("JSON-RPC method call: " + m.getClass().getName() + "." + m.getName());
+            try {
+                response = getJsonSuccessResponse(m.invoke(context, arguments));
+            }
+            catch(IllegalArgumentException e) {
+                throw new JsonServiceException(JsonServiceError.INVALID_PARAMS);
+            }
+        }
+        catch(InvocationTargetException e) {
+            Throwable t = e.getCause();
+            if(t instanceof JsonServiceException) {
+                JsonServiceException jse = (JsonServiceException) t;
+                response = getJsonErrorResponse(jse.getError());
+            }
+            else {
+                throw e;
+            }
+        }
+        catch(JsonServiceException e) {
+            response = getJsonErrorResponse(e.getError());
         }
 
         return response;

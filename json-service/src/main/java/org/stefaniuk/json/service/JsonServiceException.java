@@ -1,21 +1,25 @@
 package org.stefaniuk.json.service;
 
 /**
- * JSON Service exception.
+ * <p>
+ * JSON service exception.
+ * </p>
  * 
  * @author Daniel Stefaniuk
+ * @version 1.0.0
+ * @since 2010/09/20
  */
 public class JsonServiceException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    /** JSON service error attached to this exception. */
+    /** This is a reference to JSON service error object. */
     private final JsonServiceError error;
 
     /**
      * Constructor
      * 
-     * @param error
+     * @param error Error object
      */
     public JsonServiceException(JsonServiceError error) {
 
@@ -25,9 +29,9 @@ public class JsonServiceException extends Exception {
     }
 
     /**
-     * Returns exception code.
+     * Returns error code.
      * 
-     * @return
+     * @return Returns error code.
      */
     public int getCode() {
 
@@ -37,7 +41,7 @@ public class JsonServiceException extends Exception {
     /**
      * Returns error object.
      * 
-     * @return
+     * @return Returns error object.
      */
     public JsonServiceError getError() {
 

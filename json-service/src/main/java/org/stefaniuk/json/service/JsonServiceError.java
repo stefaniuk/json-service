@@ -1,9 +1,16 @@
 package org.stefaniuk.json.service;
 
 /**
- * JSON Service error definitions.
+ * <p>
+ * JSON service error.
+ * </p>
+ * <p>
+ * This class provides definition of JSON-RPC error codes.
+ * </p>
  * 
  * @author Daniel Stefaniuk
+ * @version 1.0.0
+ * @since 2010/09/20
  */
 public enum JsonServiceError {
 
@@ -24,8 +31,8 @@ public enum JsonServiceError {
     /**
      * Constructor
      * 
-     * @param code
-     * @param message
+     * @param code Error code
+     * @param message Error message
      */
     private JsonServiceError(int code, String message) {
 
@@ -36,7 +43,7 @@ public enum JsonServiceError {
     /**
      * Returns error code.
      * 
-     * @return
+     * @return Returns error code.
      */
     public int getCode() {
 
@@ -46,7 +53,7 @@ public enum JsonServiceError {
     /**
      * Returns error message.
      * 
-     * @return
+     * @return Returns error message.
      */
     public String getMessage() {
 
@@ -55,8 +62,6 @@ public enum JsonServiceError {
 
     /**
      * Sets error message.
-     * 
-     * @return
      */
     public void setMessage(String message) {
 

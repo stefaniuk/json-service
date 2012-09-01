@@ -27,37 +27,66 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is responsible for building service mapping description and
- * processes JSON-RPC request.
+ * <p>
+ * JSON service invoker.
+ * </p>
+ * <p>
+ * This class is responsible for building <a
+ * href="http://livedocs.dojotoolkit.org/dojox/rpc/smd">Service Mapping
+ * Description</a>, processing request and calling the method. It is created by
+ * the {@link JsonServiceRegistry} as a wrapper of JSON-RPC class and stored in
+ * the registry.
+ * </p>
  * 
  * @author Daniel Stefaniuk
+ * @version 1.0.0
+ * @since 2010/09/20
  */
 public class JsonServiceInvoker {
 
     private final Logger logger = LoggerFactory.getLogger(JsonServiceInvoker.class);
 
+    /**
+     * This object provides functionality for conversion between Java objects
+     * and JSON.
+     */
     private static ObjectMapper mapper = new ObjectMapper();
 
-    private boolean isInitialized = false;
+    /** Indicates if object has been initialised. */
+    private boolean isInitialised = false;
 
+    /** This is registered JSON-RPC class. */
     private final Class<?> clazz;
 
+    /** This is registered JSON-RPC object. */
     private Object context;
 
+    /** Collection of all JSON-RPC method exposed to a client. */
     private Map<String, Method> methods = new HashMap<String, Method>();;
 
+    /**
+     * The transport property defines the transport mechanism to be used to
+     * deliver service calls to server.
+     */
     private Transport transport = Transport.POST;
 
+    /** This is the expected content type of the content returned by a service. */
     private ContentType contentType = ContentType.APPLICATION_JSON;
 
+    /**
+     * Envelope defines how a service message string is created from the
+     * provided parameters.
+     */
     private Envelope envelope = Envelope.JSON_RPC_2_0;
 
+    /** Version of Service Mapping Description */
     private Version version = Version.SMD_2_0;
 
+    /** Service Mapping Description */
     private ObjectNode smd;
 
     /**
-     * Transport
+     * JSON-RPC transport type.
      * 
      * @author Daniel Stefaniuk
      */
@@ -81,7 +110,7 @@ public class JsonServiceInvoker {
     }
 
     /**
-     * Content type.
+     * JSON-RPC response content type.
      * 
      * @author Daniel Stefaniuk
      */
@@ -105,7 +134,7 @@ public class JsonServiceInvoker {
     }
 
     /**
-     * Envelope
+     * JSON-RPC envelope type.
      * 
      * @author Daniel Stefaniuk
      */
@@ -153,7 +182,7 @@ public class JsonServiceInvoker {
     }
 
     /**
-     * Data type
+     * JSON-RPC supported data types.
      * 
      * @author Daniel Stefaniuk
      */
@@ -175,6 +204,7 @@ public class JsonServiceInvoker {
 
         public static String getName(Class<?> clazz) {
 
+            // check all data types
             for(DataType type: DataType.values()) {
                 for(Class<?> c: type.classes) {
                     if(clazz.equals(c)) {
@@ -183,7 +213,7 @@ public class JsonServiceInvoker {
                 }
             }
 
-            // if non of the above this must be POJO
+            // non of the above, so this must be POJO object
             return DataType.OBJECT.toString();
         }
 
@@ -197,7 +227,7 @@ public class JsonServiceInvoker {
     /**
      * Constructor
      * 
-     * @param clazz
+     * @param clazz Class
      */
     public JsonServiceInvoker(Class<?> clazz) {
 
@@ -207,7 +237,7 @@ public class JsonServiceInvoker {
     /**
      * Constructor
      * 
-     * @param obj
+     * @param obj Object
      */
     public JsonServiceInvoker(Object obj) {
 
@@ -219,7 +249,7 @@ public class JsonServiceInvoker {
      * Sets transport.
      * 
      * @param transport
-     * @return
+     * @return Returns {@link JsonServiceInvoker} object.
      */
     public JsonServiceInvoker setTransport(Transport transport) {
 
@@ -231,7 +261,7 @@ public class JsonServiceInvoker {
     /**
      * Gets transport.
      * 
-     * @return
+     * @return Returns {@link Transport} object.
      */
     public Transport getTransport() {
 
@@ -242,7 +272,7 @@ public class JsonServiceInvoker {
      * Sets content type.
      * 
      * @param contentType
-     * @return
+     * @return Returns {@link JsonServiceInvoker} object.
      */
     public JsonServiceInvoker setContentType(ContentType contentType) {
 
@@ -254,7 +284,7 @@ public class JsonServiceInvoker {
     /**
      * Gets content type.
      * 
-     * @return
+     * @return Returns {@link ContentType} object.
      */
     public ContentType getContentType() {
 
@@ -265,7 +295,7 @@ public class JsonServiceInvoker {
      * Sets envelope.
      * 
      * @param envelope
-     * @return
+     * @return Returns {@link JsonServiceInvoker} object.
      */
     public JsonServiceInvoker setEnvelope(Envelope envelope) {
 
@@ -277,7 +307,7 @@ public class JsonServiceInvoker {
     /**
      * Gets envelope.
      * 
-     * @return
+     * @return Returns {@link Envelope} object.
      */
     public Envelope getEnvelope() {
 
@@ -288,7 +318,7 @@ public class JsonServiceInvoker {
      * Sets version.
      * 
      * @param version
-     * @return
+     * @return Returns {@link JsonServiceInvoker} object.
      */
     public JsonServiceInvoker setVersion(Version version) {
 
@@ -300,7 +330,7 @@ public class JsonServiceInvoker {
     /**
      * Gets version.
      * 
-     * @return
+     * @return Returns {@link Version} object.
      */
     public Version getVersion() {
 
@@ -308,14 +338,15 @@ public class JsonServiceInvoker {
     }
 
     /**
-     * Builds service mapping description.
+     * This method creates an instance of registered JSON-RPC class and produces
+     * Service Mapping Description.
      */
     private void init() {
 
         try {
 
+            // create an instance
             if(context == null) {
-                // get context object
                 Constructor<?> ctor = clazz.getConstructor();
                 context = ctor.newInstance();
             }
@@ -327,7 +358,7 @@ public class JsonServiceInvoker {
                 }
             }
 
-            // get service mapping description
+            // produce Service Mapping Description
             smd = mapper.createObjectNode();
             smd.put("transport", transport.toString());
             smd.put("contentType", contentType.toString());
@@ -399,9 +430,9 @@ public class JsonServiceInvoker {
     /**
      * Checks if a given method is defined as JSON-RPC method.
      * 
-     * @param clazz
-     * @param method
-     * @return
+     * @param clazz Class
+     * @param method Method
+     * @return Returns true or false.
      */
     private boolean isService(Class<?> clazz, Method method) {
 
@@ -412,13 +443,13 @@ public class JsonServiceInvoker {
     }
 
     /**
-     * Returns service mapping description as JSON object.
+     * Returns Service Mapping Description as JSON object.
      * 
-     * @return
+     * @return Returns JSON object.
      */
     protected JsonNode getServiceMap() {
 
-        if(!isInitialized) {
+        if(!isInitialised) {
             init();
         }
 
@@ -428,20 +459,20 @@ public class JsonServiceInvoker {
     /**
      * Processes JSON-RPC request.
      * 
-     * @param request
-     * @param requestNode
-     * @return
+     * @param request HTTP request
+     * @param requestNode JSON-RPC request
+     * @return Returns JSON object.
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      * @throws JsonParseException
      * @throws JsonMappingException
      * @throws IOException
      */
-    protected JsonNode process(HttpServletRequest request, ObjectNode requestNode)
-            throws IllegalAccessException,
+    protected JsonNode process(HttpServletRequest request, ObjectNode requestNode) throws IllegalAccessException,
             InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
-        if(!isInitialized) {
+        // make sure this object has been initialised
+        if(!isInitialised) {
             init();
         }
 
@@ -449,13 +480,13 @@ public class JsonServiceInvoker {
 
         try {
 
+            // get method name
             if(!requestNode.has("method") || "".equals(requestNode.get("method"))) {
                 throw new JsonServiceException(JsonServiceError.INVALID_REQUEST);
             }
-
             String name = requestNode.get("method").getTextValue();
 
-            // get method
+            // get reference of the method
             Method method = methods.get(name);
             if(method == null) {
                 throw new JsonServiceException(JsonServiceError.METHOD_NOT_FOUND);
@@ -507,9 +538,9 @@ public class JsonServiceInvoker {
     /**
      * Processes request.
      * 
-     * @param request
-     * @param method
-     * @return
+     * @param request HTTP request
+     * @param method Method name
+     * @return Returns JSON object.
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      * @throws JsonParseException
@@ -520,7 +551,8 @@ public class JsonServiceInvoker {
             throws IllegalAccessException,
             InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
-        if(!isInitialized) {
+        // make sure this object has been initialised
+        if(!isInitialised) {
             init();
         }
 
@@ -528,7 +560,7 @@ public class JsonServiceInvoker {
 
         try {
 
-            // get method
+            // get reference of the method
             Method m = methods.get(method);
             if(m == null) {
                 throw new JsonServiceException(JsonServiceError.METHOD_NOT_FOUND);
@@ -578,8 +610,8 @@ public class JsonServiceInvoker {
     /**
      * Returns response.
      * 
-     * @param result
-     * @return
+     * @param result Result object
+     * @return Returns response object as JSON.
      */
     private JsonNode getJsonSuccessResponse(Object result) {
 
@@ -595,8 +627,8 @@ public class JsonServiceInvoker {
     /**
      * Returns error response.
      * 
-     * @param error
-     * @return
+     * @param error Error object
+     * @return Returns response object as JSON.
      */
     private JsonNode getJsonErrorResponse(JsonServiceError error) {
 
@@ -611,11 +643,11 @@ public class JsonServiceInvoker {
     }
 
     /**
-     * Returns success response.
+     * Returns successful JSON-RPC response.
      * 
-     * @param id
-     * @param result
-     * @return
+     * @param id JSON-RPC request ID
+     * @param result Result object
+     * @return Returns response object as JSON.
      */
     private JsonNode getJsonRpcSuccessResponse(Integer id, Object result) {
 
@@ -652,11 +684,11 @@ public class JsonServiceInvoker {
     }
 
     /**
-     * Returns error response.
+     * Returns error JSON-RPC response.
      * 
-     * @param id
-     * @param error
-     * @return
+     * @param id JSON-RPC request ID
+     * @param error Error object
+     * @return Returns response object as JSON.
      */
     private JsonNode getJsonRpcErrorResponse(Integer id, JsonServiceError error) {
 
@@ -681,8 +713,8 @@ public class JsonServiceInvoker {
     /**
      * Converts a list to JSON array.
      * 
-     * @param list
-     * @return
+     * @param list List
+     * @return Returns JSON array.
      */
     private ArrayNode toJson(List<?> list) {
 
@@ -742,8 +774,8 @@ public class JsonServiceInvoker {
     /**
      * Converts a map to JSON object.
      * 
-     * @param map
-     * @return
+     * @param map Map
+     * @return Returns JSON object.
      */
     private ObjectNode toJson(Map<?, ?> map) {
 

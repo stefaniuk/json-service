@@ -17,8 +17,6 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +32,6 @@ import org.springframework.http.ResponseEntity;
  */
 public class JsonServiceUtil {
 
-    private final Logger logger = LoggerFactory.getLogger(JsonServiceUtil.class);
-
     /**
      * This object provides functionality for conversion between Java objects
      * and JSON.
@@ -43,8 +39,8 @@ public class JsonServiceUtil {
     private static ObjectMapper mapper = new ObjectMapper();
 
     /**
-     * The main factory class of Jackson package, used to configure and
-     * construct reader and writer instances.
+     * This object is used to configure and construct JSON reader and writer
+     * instances.
      */
     private static JsonFactory jsonFactory = new JsonFactory();
 
@@ -190,12 +186,12 @@ public class JsonServiceUtil {
     }
 
     /**
-     * Creates Java object from JSON.
+     * Creates Java POJO object from JSON string.
      * 
      * @param <T>
      * @param jsonAsString JSON string
      * @param pojoClass POJO class
-     * @return Object
+     * @return POJO object
      * @throws JsonMappingException
      * @throws JsonParseException
      * @throws IOException
@@ -207,10 +203,12 @@ public class JsonServiceUtil {
     }
 
     /**
+     * Creates Java POJO object from JSON string.
+     * 
      * @param <T>
-     * @param fr
-     * @param pojoClass
-     * @return
+     * @param fr File stream to read JSON string.
+     * @param pojoClass POJO class
+     * @return POJO object
      * @throws JsonParseException
      * @throws IOException
      */
@@ -220,9 +218,11 @@ public class JsonServiceUtil {
     }
 
     /**
-     * @param pojo
-     * @param prettyPrint
-     * @return
+     * Serialises Java POJO object to JSON string.
+     * 
+     * @param pojo POJO object
+     * @param prettyPrint JSON pretty print
+     * @return JSON string
      * @throws JsonMappingException
      * @throws JsonGenerationException
      * @throws IOException
@@ -241,9 +241,11 @@ public class JsonServiceUtil {
     }
 
     /**
-     * @param pojo
-     * @param fw
-     * @param prettyPrint
+     * Serialises Java POJO object to JSON string.
+     * 
+     * @param pojo POJO object
+     * @param fw File stream to write JSON string.
+     * @param prettyPrint JSON pretty print
      * @throws JsonMappingException
      * @throws JsonGenerationException
      * @throws IOException

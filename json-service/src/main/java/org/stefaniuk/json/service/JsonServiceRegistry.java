@@ -29,26 +29,31 @@ import org.slf4j.LoggerFactory;
  * A registry class that holds all classes provided by a developer that are
  * available to a JSON-RPC client. This is the main class that should be
  * utilised in a user code. Multiple instances can be created or the singleton
- * pattern could be used. The last one is probably more disarable in most use
+ * pattern could be used. The last one is probably more desirable in most use
  * cases.
  * </p>
  * <p>
  * A class can be registered/unregistered by passing a class name as an argument
- * of {@link register}/{@link unregister} method. Instance of that class will be
- * created by the service invoker object only once, when a first call is made to
- * any of the exposed methods or when service mapping description is produced.
+ * of {@link #register(Class) register}/{@link #unregister(Class) unregister}
+ * method. Instance of that class will be created by the service invoker object
+ * only once, when a first call is made to any of the exposed methods or when
+ * service mapping description is produced.
  * </p>
  * <p>
  * It is user's responsibility to pass incoming HTTP request to the registry
  * object for method to be executed. From inside of a Java servlet this can be
- * achieved by calling {@link handle} method on the registry object itself:
+ * achieved by calling
+ * {@link #handle(HttpServletRequest, HttpServletResponse, Class) handle} method
+ * on the registry object itself:
  * 
  * <pre>
  * registry.handle(request, response, NameOfClass.class);
  * </pre>
  * 
  * From a controller (using Spring Framework) this can be done by calling static
- * method {@link handle} on {@link JsonServiceUtil} class:
+ * method
+ * {@link JsonServiceUtil#handle(JsonServiceRegistry, HttpServletRequest, HttpServletResponse, Class)
+ * handle} from {@link JsonServiceUtil} class:
  * </p>
  * 
  * <pre>

@@ -28,10 +28,7 @@ var dojoConfig = {
         layers : {
             'dojo/dojo': {
                 include: [
-                    'dojox/rpc/Service',
-                    'dojox/rpc/JsonRPC',
-                    'dojox/data/ClientFilter',
-                    'dojox/data/JsonRestStore'
+                    'stefaniuk/main'
                 ]
             }
         },

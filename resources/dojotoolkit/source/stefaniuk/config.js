@@ -26,7 +26,7 @@ var dojoConfig = {
         releaseName: 'build',
 
         layers : {
-            'stefaniuk/stefaniuk': {
+            'dojo/dojo': {
                 include: [
                     'dojox/rpc/Service',
                     'dojox/rpc/JsonRPC',

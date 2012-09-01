@@ -28,6 +28,13 @@
     </target>
 
     <!-- ============================================ -->
+    <!-- target: clean                                -->
+    <!-- ============================================ -->
+    <target name="clean" depends="init">
+        <delete dir="${basedir}/source/build" />
+    </target>
+
+    <!-- ============================================ -->
     <!-- (DEFAULT) target: minify                     -->
     <!-- ============================================ -->
     <target name="minify" depends="init" if="buildscript.present">
@@ -37,6 +44,7 @@
             <arg line="--profile ${profile.name}" />
             <arg line="--release" />
         </exec>
+        <copy file="${basedir}/source/build/dojo/dojo.js" tofile="../../json-service-example1/src/main/webapp/dojo.js"/>
     </target>
 
 </project>

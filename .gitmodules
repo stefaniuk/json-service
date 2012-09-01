@@ -1,12 +1,12 @@
-[submodule "externals\\dojotoolkit\\dojo"]
-	path = externals\\dojotoolkit\\dojo
+[submodule "resources/dojotoolkit/source/dojo"]
+	path = resources/dojotoolkit/source/dojo
 	url = git://github.com/dojo/dojo.git
-[submodule "externals\\dojotoolkit\\dijit"]
-	path = externals\\dojotoolkit\\dijit
+[submodule "resources/dojotoolkit/source/dijit"]
+	path = resources/dojotoolkit/source/dijit
 	url = git://github.com/dojo/dijit.git
-[submodule "externals\\dojotoolkit\\dojox"]
-	path = externals\\dojotoolkit\\dojox
+[submodule "resources/dojotoolkit/source/dojox"]
+	path = resources/dojotoolkit/source/dojox
 	url = git://github.com/dojo/dojox.git
-[submodule "externals\\dojotoolkit\\util"]
-	path = externals\\dojotoolkit\\util
+[submodule "resources/dojotoolkit/source/util"]
+	path = resources/dojotoolkit/source/util
 	url = git://github.com/dojo/util.git

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="stefaniuk" default="minify" basedir=".">
+
+    <!-- ============================================ -->
+    <!-- detect operating system                      -->
+    <!-- ============================================ -->
+    <condition property="os.windows">
+        <os family="windows" />
+    </condition>
+    <condition property="os.unix">
+        <os family="unix" />
+    </condition>
+    <target name="detect-windows" if="os.windows">
+        <property name="os.script.ext" value="bat" />
+    </target>
+    <target name="detect-unix" if="os.unix">
+        <property name="os.script.ext" value="sh" />
+    </target>
+    <target name="detect-os" depends="detect-windows, detect-unix" />
+
+    <!-- ============================================ -->
+    <!-- target: init                                 -->
+    <!-- ============================================ -->
+    <target name="init"  depends="detect-os">
+        <property name="config.name" value="../../stefaniuk/config.js" />
+        <property name="profile.name" value="../../stefaniuk/stefaniuk.profile.js" />
+        <available file="${basedir}/source/util/buildscripts/build.${os.script.ext}" property="buildscript.present" />
+    </target>
+
+    <!-- ============================================ -->
+    <!-- (DEFAULT) target: minify                     -->
+    <!-- ============================================ -->
+    <target name="minify" depends="init" if="buildscript.present">
+        <echo>Minifying...</echo>
+        <exec dir="${basedir}/source/util/buildscripts/" executable="${basedir}/source/util/buildscripts/build.${os.script.ext}" output="${basedir}/build.log">
+            <arg line="--dojoConfig ${config.name}" />
+            <arg line="--profile ${profile.name}" />
+            <arg line="--release" />
+        </exec>
+    </target>
+
+</project>

@@ -1,1 +1,15 @@
+Pull external projects
+======================
+
+git submodule init
+git submodule update
+
+Prepare JavaScript files
+========================
+
+TODO
+
+Build project using Maven
+=========================
+
 mvn clean install source:jar javadoc:javadoc javadoc:jar

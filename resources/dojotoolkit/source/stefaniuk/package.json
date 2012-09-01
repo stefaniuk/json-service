@@ -1,0 +1,19 @@
+{
+    name: 'JSON Service',
+    version: '1.1.0',
+    directories: {
+        lib: '.'
+    },
+    main: 'main',
+    description: 'JavaScript implementation of JSON-RPC protocol based on Dojo Toolkit.',
+    licenses: [
+        {
+            type: 'BSD',
+            url: 'https://raw.github.com/stefaniuk/json-service/master/LICENSE'
+        }
+    ],
+    bugs: 'https://github.com/stefaniuk/json-service/issues',
+    keywords: [ 'JSON Service', 'JSON-RPC', 'Dojo Toolkit', 'JavaScript' ],
+    homepage: 'http://stefaniuk.github.com/json-service/',
+    dojoBuild: 'stefaniuk.profile.js'
+}

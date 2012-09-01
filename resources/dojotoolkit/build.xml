@@ -44,7 +44,9 @@
             <arg line="--profile ${profile.name}" />
             <arg line="--release" />
         </exec>
-        <copy file="${basedir}/source/build/dojo/dojo.js" tofile="../../json-service-example1/src/main/webapp/dojo.js"/>
+        <!-- Example 1 -->
+        <copy file="${basedir}/source/build/dojo/dojo.js" tofile="../../json-service-example1/src/main/webapp/dojotoolkit/dojo/dojo.js"/>
+        <copy file="${basedir}/source/build/dojo/dojo.js.uncompressed.js" tofile="../../json-service-example1/src/main/webapp/dojotoolkit/dojo/dojo.js.uncompressed.js"/>
     </target>
 
 </project>

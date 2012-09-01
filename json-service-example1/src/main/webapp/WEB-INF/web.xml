@@ -7,10 +7,10 @@
   <servlet>
     <display-name>servlet</display-name>
     <servlet-name>servlet</servlet-name>
-    <servlet-class>org.stefaniuk.json.service.example1.TestServlet</servlet-class>
+    <servlet-class>org.stefaniuk.json.service.example1.JsonRpcController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>servlet</servlet-name>
-    <url-pattern>/service</url-pattern>
+    <url-pattern>/jsonrpc</url-pattern>
   </servlet-mapping>
 </web-app>

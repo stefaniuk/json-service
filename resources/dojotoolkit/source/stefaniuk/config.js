@@ -28,7 +28,10 @@ var dojoConfig = {
         layers : {
             'dojo/dojo': {
                 include: [
-                    'stefaniuk/main'
+                    'stefaniuk/main',
+                    // additional modules
+                    'dojo/selector/acme',
+                    'dojo/_firebug/firebug'
                 ]
             }
         },

@@ -178,6 +178,27 @@ public class JsonServiceRegistry {
     }
 
     /**
+     * Produces Service Mapping Description for a given JSON-RPC class.
+     * 
+     * @param clazz Class
+     * @param response HTTP response
+     * @return Returns output stream.
+     */
+    public OutputStream getServiceMap(Class<?> clazz, HttpServletResponse response) {
+
+        OutputStream os = null;
+
+        try {
+            os = getServiceMap(clazz, response.getOutputStream());
+        }
+        catch(IOException e) {
+            e.printStackTrace(System.err);
+        }
+
+        return os;
+    }
+
+    /**
      * Handles request as an input stream.
      * 
      * @param is Input stream

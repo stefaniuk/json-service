@@ -1,4 +1,4 @@
-package org.stefaniuk.json.service.test;
+package org.stefaniuk.json.service.example1;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

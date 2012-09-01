@@ -24,7 +24,7 @@
     </properties>
     <modules>
         <module>json-service</module>
-        <module>json-service-test</module>
+        <module>json-service-example1</module>
     </modules>
     <repositories>
         <repository>

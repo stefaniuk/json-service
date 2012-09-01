@@ -3,10 +3,29 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.stefaniuk</groupId>
     <artifactId>parent</artifactId>
-    <version>1.1.0</version>
     <packaging>pom</packaging>
     <name>parent</name>
-    <url>https://github.com/stefaniuk/json-service</url>
+    <version>1.1.0</version>
+    <description>JSON-RPC library for Java</description>
+    <url>http://stefaniuk.github.com/json-service/</url>
+    <licenses>
+        <license>
+            <name>The "New" BSD License</name>
+            <url>https://raw.github.com/stefaniuk/json-service/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/stefaniuk/json-service</url>
+        <connection>https://github.com/stefaniuk/json-service</connection>
+    </scm>
+    <developers>
+        <developer>
+            <id>1</id>
+            <name>Daniel Stefaniuk</name>
+            <email>daniel.stefaniuk@gmail.com</email>
+        </developer>
+    </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Servlet API -->

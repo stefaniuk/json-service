@@ -13,6 +13,14 @@ Quick Start
 3. Build project using Maven command `mvn clean install source:jar javadoc:javadoc javadoc:jar` from project's main directory.
 4. Deploy example project to your servlet container using deployment script `json-service-example?/deploy/json-service-example?.xml`.
 
+Useful resources
+----------------
+
+* [JSON-RPC 2.0 Specification](http://www.jsonrpc.org/specification)
+* [Service Mapping Description Proposal](http://livedocs.dojotoolkit.org/dojox/rpc/smd)
+* [Dojo Toolkit dojox.rpc.Service Documentation](http://dojotoolkit.org/reference-guide/1.8/dojox/rpc/Service.html)
+
+
 About
 -----
 

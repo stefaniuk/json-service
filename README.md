@@ -11,7 +11,7 @@ Quick Start
 1. Clone the repository using `git clone --recursive` or run `git submodule init` and `git submodule update` after you clone repository non-recursively.
 2. Prepare JavaScript files from command line (this is optional). To do that go to `resources/dojotoolkit/` directory and execute Ant command `ant minify`.
 3. Build project using Maven command `mvn clean install source:jar javadoc:javadoc javadoc:jar` from project's main directory.
-4. Deploy example project to your servlet container using WAR file or deployment script `json-service-example?/deploy/json-service-example?.xml`.
+4. Deploy example projects to your servlet container using WAR files or deployment scripts `json-service-example?/deploy/json-service-example?.xml`.
 
 Useful Resources
 ----------------

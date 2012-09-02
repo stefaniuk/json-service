@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.stefaniuk.json.service.JsonServiceRegistry;
 
 /**
- * This is an intermediate class between a controller and a data access object.
+ * <p>
+ * MVCS abstract service.
+ * </p>
+ * <p>
+ * This is an intermediate class between controller and model.
+ * </p>
  * 
  * @author Daniel Stefaniuk
  * @version 1.1.0
  * @since 2012/09/02
- * @param <D>
  */
 public class AbstractService<D> {
 

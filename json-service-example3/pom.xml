@@ -38,6 +38,8 @@
         <jackson.version>1.9.9</jackson.version>
         <!-- Spring Framework -->
         <springframework.version>3.1.2.RELEASE</springframework.version>
+        <!-- Tiles -->
+        <tiles.version>3.0.1</tiles.version>
     </properties>
     <repositories>
         <repository>
@@ -136,6 +138,12 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
+        <!-- Tiles -->
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-jsp</artifactId>
+            <version>${tiles.version}</version>
+        </dependency>
         <!-- JSON Service -->
         <dependency>
             <groupId>org.stefaniuk.json.service</groupId>

@@ -23,9 +23,9 @@ Useful Resources
 About
 -----
 
-This is JSON-RPC protocol implementation in Java with Service Mapping Description support.
+This is JSON-RPC protocol implementation (server-side) in Java with Service Mapping Description support. It integrates well with Dojo Toolkit and Spring Framework.
 
-For more information, visit <http://stefaniuk.github.com/json-service/>.
+For more information please, visit <http://stefaniuk.github.com/json-service/>.
 
 License
 -------

@@ -19,12 +19,6 @@
         <param-value>/WEB-INF/classes/log4j.properties</param-value>
     </context-param>
 
-    <context-param>
-        <param-name>webAppRootKey</param-name>
-        <!-- this value has to be unique for each webapp -->
-        <param-value>webapp.root.directory.json-service-example2</param-value>
-    </context-param>
-
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>

@@ -8,7 +8,7 @@
         require([
             'dojo/ready',
             'dojox/rpc/Service',
-            'dojox/rpc/JsonRPC' // JsonRPC is required
+            'dojox/rpc/JsonRPC' // JsonRPC has to be loaded too
         ], function(ready, Service) {
             ready(function() {
 

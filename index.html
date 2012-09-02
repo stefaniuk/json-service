@@ -223,24 +223,6 @@
                 &lt;/beans&gt;
             </pre>
 
-            <span class="file-name">web.xml</span>
-            <pre class="brush: xml">
-                &lt;servlet&gt;
-                    &lt;servlet-name&gt;json-service-example2-controller&lt;/servlet-name&gt;
-                    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
-                    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
-                    &lt;init-param&gt;
-                        &lt;param-name&gt;namespace&lt;/param-name&gt;
-                        &lt;param-value&gt;config/json-service-example2-controller-servlet&lt;/param-value&gt;
-                    &lt;/init-param&gt;
-                &lt;/servlet&gt;
-
-                &lt;servlet-mapping&gt;
-                    &lt;servlet-name&gt;json-service-example2-controller&lt;/servlet-name&gt;
-                    &lt;url-pattern&gt;/controller/*&lt;/url-pattern&gt;
-                &lt;/servlet-mapping&gt;
-            </pre>
-
             <span class="file-name">index.jsp</span>
             <pre class="brush: javascript">
                 require([

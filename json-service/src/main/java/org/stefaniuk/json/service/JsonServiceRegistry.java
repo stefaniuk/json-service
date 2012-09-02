@@ -114,6 +114,23 @@ public class JsonServiceRegistry {
     }
 
     /**
+     * Registers an array of classes to make them available to a JSON-RPC
+     * client.
+     * 
+     * @param classes Array of classes.
+     * @return Returns {@link JsonServiceRegistry} object.
+     */
+    public JsonServiceRegistry setRegistry(Class<?>[] classes) {
+
+        registry.clear();
+        for(Class<?> clazz: classes) {
+            register(clazz);
+        }
+
+        return this;
+    }
+
+    /**
      * Unregisters class.
      * 
      * @param clazz Class
@@ -143,6 +160,19 @@ public class JsonServiceRegistry {
             registry.remove(name);
             logger.info("JSON-RPC unregistered class: " + name);
         }
+
+        return this;
+    }
+
+    /**
+     * Removes all JSON-RPC objects from the registry.
+     * 
+     * @return Returns {@link JsonServiceRegistry} object.
+     */
+    public JsonServiceRegistry clearRegistry() {
+
+        registry.clear();
+        logger.info("JSON-RPC unregistered all classes");
 
         return this;
     }

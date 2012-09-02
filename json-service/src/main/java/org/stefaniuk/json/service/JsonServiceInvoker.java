@@ -471,6 +471,8 @@ public class JsonServiceInvoker {
     protected JsonNode process(HttpServletRequest request, ObjectNode requestNode) throws IllegalAccessException,
             InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
+        logger.debug("JSON-RPC request: " + requestNode.toString());
+
         // make sure this object has been initialised
         if(!isInitialised) {
             init();
@@ -510,7 +512,7 @@ public class JsonServiceInvoker {
             temp.toArray(args);
 
             // invoke method
-            logger.debug("JSON-RPC method call: " + method.getClass().getName() + "." + method.getName());
+            logger.debug("JSON-RPC method call: " + method.getDeclaringClass().getName() + "." + method.getName());
             try {
                 response = getJsonRpcSuccessResponse(requestNode.get("id").getIntValue(), method.invoke(context, args));
             }
@@ -531,6 +533,8 @@ public class JsonServiceInvoker {
         catch(JsonServiceException e) {
             response = getJsonRpcErrorResponse(requestNode.get("id").getIntValue(), e.getError());
         }
+
+        logger.debug("JSON-RPC response: " + response.toString());
 
         return response;
     }
@@ -582,7 +586,7 @@ public class JsonServiceInvoker {
             temp.toArray(arguments);
 
             // invoke method
-            logger.debug("JSON-RPC method call: " + m.getClass().getName() + "." + m.getName());
+            logger.debug("JSON-RPC method call: " + m.getDeclaringClass().getName() + "." + m.getName());
             try {
                 response = getJsonSuccessResponse(m.invoke(context, arguments));
             }
@@ -603,6 +607,8 @@ public class JsonServiceInvoker {
         catch(JsonServiceException e) {
             response = getJsonErrorResponse(e.getError());
         }
+
+        logger.debug("JSON-RPC response: " + response.toString());
 
         return response;
     }

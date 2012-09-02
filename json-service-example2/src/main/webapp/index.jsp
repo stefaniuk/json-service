@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>json-service-example1</title>
+    <title>json-service-example2</title>
     <script type="text/javascript" src="dojotoolkit/dojo/dojo.js" data-dojo-config="async: 1, isDebug: 1, locale: 'en'"></script>
     <script type="text/javascript">
         require([
@@ -13,7 +13,7 @@
             ready(function() {
 
                 // create JSON-RPC service
-                service = new Service('jsonrpc');
+                service = new Service('controller/jsonrpc/');
 
                 // call JSON-RPC methods
                 service.add(12345, 54321).then(function(result) {

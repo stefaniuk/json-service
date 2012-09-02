@@ -47,6 +47,12 @@
         <!-- Example 1 -->
         <copy file="${basedir}/source/build/dojo/dojo.js" tofile="../../json-service-example1/src/main/webapp/dojotoolkit/dojo/dojo.js"/>
         <copy file="${basedir}/source/build/dojo/dojo.js.uncompressed.js" tofile="../../json-service-example1/src/main/webapp/dojotoolkit/dojo/dojo.js.uncompressed.js"/>
+        <!-- Example 2 -->
+        <copy file="${basedir}/source/build/dojo/dojo.js" tofile="../../json-service-example2/src/main/webapp/dojotoolkit/dojo/dojo.js"/>
+        <copy file="${basedir}/source/build/dojo/dojo.js.uncompressed.js" tofile="../../json-service-example2/src/main/webapp/dojotoolkit/dojo/dojo.js.uncompressed.js"/>
+        <!-- Example 3 -->
+        <copy file="${basedir}/source/build/dojo/dojo.js" tofile="../../json-service-example3/src/main/webapp/dojotoolkit/dojo/dojo.js"/>
+        <copy file="${basedir}/source/build/dojo/dojo.js.uncompressed.js" tofile="../../json-service-example3/src/main/webapp/dojotoolkit/dojo/dojo.js.uncompressed.js"/>
     </target>
 
 </project>

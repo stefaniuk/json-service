@@ -36,10 +36,6 @@
         <log4j.version>1.2.17</log4j.version>
         <!-- Jackson -->
         <jackson.version>1.9.9</jackson.version>
-        <!-- Spring Framework -->
-        <springframework.version>3.1.2.RELEASE</springframework.version>
-        <!-- JUnit -->
-        <junit.version>4.10</junit.version>
     </properties>
     <repositories>
         <repository>
@@ -89,27 +85,12 @@
             <artifactId>jackson-mapper-lgpl</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <!-- Spring Framework -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${springframework.version}</version>
-        </dependency>
-        <!-- JUnit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-
         <!-- JSON Service -->
         <dependency>
             <groupId>org.stefaniuk.json.service</groupId>
             <artifactId>json-service</artifactId>
             <version>${project.version}</version>
         </dependency>
-
     </dependencies>
     <build>
         <finalName>${project.name}</finalName>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 
 /**
  * <p>
@@ -14,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * @version 1.1.0
  * @since 2012/09/02
  */
-public abstract class AbstractModelDao<M> {
+public abstract class AbstractModelDao<M> extends NamedParameterJdbcDaoSupport {
 
     protected final Logger logger = LoggerFactory.getLogger(AbstractModelDao.class);
 

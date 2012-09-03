@@ -1,5 +1,7 @@
 package org.stefaniuk.json.service.example3.service;
 
-public class CustomerService {
+import org.stefaniuk.json.service.example3.model.CustomerDao;
+
+public class CustomerService extends AbstractService<CustomerDao> {
 
 }

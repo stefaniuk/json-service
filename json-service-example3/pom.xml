@@ -126,6 +126,12 @@
 			<artifactId>spring-context</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
+        <!-- Spring Framework: JDBC Data Access Library (depends on spring-core, spring-beans, spring-context, spring-tx). -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
 		<!-- Spring Framework: Web application development utilities applicable to both Servlet and Portlet Environments (depends on spring-core, spring-beans, spring-context). -->
 		<dependency>
 			<groupId>org.springframework</groupId>

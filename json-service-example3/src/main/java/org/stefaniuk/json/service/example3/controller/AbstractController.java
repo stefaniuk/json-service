@@ -14,6 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.stefaniuk.json.service.JsonServiceRegistry;
 import org.stefaniuk.json.service.JsonServiceUtil;
 
+/**
+ * <p>
+ * MVCS abstract controller.
+ * </p>
+ * 
+ * @author Daniel Stefaniuk
+ * @version 1.1.0
+ * @since 2012/09/02
+ */
 public abstract class AbstractController {
 
     protected final Logger logger = LoggerFactory.getLogger(AbstractController.class);

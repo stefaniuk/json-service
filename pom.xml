@@ -40,6 +40,8 @@
         <springframework.version>3.1.2.RELEASE</springframework.version>
         <!-- Commons BeanUtils -->
         <commons.beanutils.version>1.8.3</commons.beanutils.version>
+        <!-- Tiles -->
+        <tiles.version>3.0.1</tiles.version>
         <!-- JUnit -->
         <junit.version>4.10</junit.version>
     </properties>
@@ -100,17 +102,72 @@
             <artifactId>jackson-mapper-lgpl</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <!-- Spring Framework -->
+		<!-- Spring Framework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${springframework.version}</version>
+			<!-- Exclude Commons Logging in favor of SLF4J -->
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Spring Framework: Expression Language (depends on spring-core). -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!-- Spring Framework: Bean Factory and JavaBeans utilities (depends on spring-core). -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!-- Spring Framework: Aspect Oriented Programming (AOP) Framework (depends on spring-core, spring-beans). -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!-- Spring Framework: Application Context (depends on spring-core, spring-expression, spring-aop, spring-beans). -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+        <!-- Spring Framework: JDBC Data Access Library (depends on spring-core, spring-beans, spring-context, spring-tx). -->
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
+            <artifactId>spring-jdbc</artifactId>
             <version>${springframework.version}</version>
         </dependency>
+		<!-- Spring Framework: Web application development utilities applicable to both Servlet and Portlet Environments (depends on spring-core, spring-beans, spring-context). -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!-- Spring Framework: Spring MVC for Servlet Environments (depends on spring-core, spring-beans, spring-context, spring-web). -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
         <!-- Commons BeanUtils -->
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>${commons.beanutils.version}</version>
+        </dependency>
+        <!-- Tiles -->
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-jsp</artifactId>
+            <version>${tiles.version}</version>
         </dependency>
         <!-- JUnit -->
         <dependency>

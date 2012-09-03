@@ -1,5 +1,7 @@
 package org.stefaniuk.json.service.example3.service;
 
-public class AccountService {
+import org.stefaniuk.json.service.example3.model.AccountDao;
+
+public class AccountService extends AbstractService<AccountDao> {
 
 }

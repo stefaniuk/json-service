@@ -1,5 +1,6 @@
 package org.stefaniuk.json.service.example3.model;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,6 +19,18 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 public abstract class AbstractModelDao<M> extends NamedParameterJdbcDaoSupport {
 
     protected final Logger logger = LoggerFactory.getLogger(AbstractModelDao.class);
+
+    /** Table name */
+    protected final String TABLE_NAME;
+
+    /**
+     * Constructor
+     */
+    public AbstractModelDao() {
+
+        // get table name
+        TABLE_NAME = getModelClass().getAnnotation(ModelTable.class).name();
+    }
 
     /**
      * Saves model.
@@ -80,5 +93,16 @@ public abstract class AbstractModelDao<M> extends NamedParameterJdbcDaoSupport {
      * @return Integer
      */
     public abstract Integer countAll();
+
+    /**
+     * Returns class of model.
+     * 
+     * @return Class<M>
+     */
+    @SuppressWarnings("unchecked")
+    private Class<M> getModelClass() {
+
+        return (Class<M>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
 
 }

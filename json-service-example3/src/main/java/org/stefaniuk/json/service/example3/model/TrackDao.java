@@ -35,7 +35,7 @@ public class TrackDao extends AbstractModelDao<Track> {
 
         List<Track> list = new ArrayList<Track>();
 
-        String sql = String.format("select * from Track");
+        String sql = String.format("select * from %1$s", TABLE_NAME);
         List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
         for(Map<String, Object> row: rows) {
             // TODO

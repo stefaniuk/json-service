@@ -35,11 +35,10 @@ public class ArtistDao extends AbstractModelDao<Artist> {
 
         List<Artist> list = new ArrayList<Artist>();
 
-        String sql = String.format("select * from Artist");
+        String sql = String.format("select * from %1$s", TABLE_NAME);
         List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
         for(Map<String, Object> row: rows) {
-            // TODO
-            //list.add(new Artist(row));
+            list.add(new Artist(row));
         }
 
         return list;

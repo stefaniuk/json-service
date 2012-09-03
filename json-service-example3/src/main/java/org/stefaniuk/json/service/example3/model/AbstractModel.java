@@ -27,21 +27,31 @@ public abstract class AbstractModel {
      */
     public abstract Integer getId();
 
+    /**
+     * Sets identity key of the model.
+     */
+    public abstract void setId(Integer id);
+
+    public AbstractModel() {
+
+    }
+
     public AbstractModel(Map<String, Object> row) {
 
         // TODO
+        //setId((Integer) row.get(getColumnName(this.getClass(), "id")));
 
     }
 
     /**
      * Returns database column name by given field name;
      * 
-     * @param clazz
-     * @param field
-     * @return
+     * @param clazz Class
+     * @param field Field name
+     * @return Name of the column.
      * @throws ModelException
      */
-    public static String getColumnName(Class<? extends AbstractModel> clazz, String field) throws ModelException {
+    protected static String getColumnName(Class<? extends AbstractModel> clazz, String field) throws ModelException {
 
         String name = null;
 

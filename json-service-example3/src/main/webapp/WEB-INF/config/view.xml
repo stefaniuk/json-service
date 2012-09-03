@@ -9,18 +9,18 @@
     <mvc:annotation-driven />
 
     <!-- Tiles view resolver -->
-    <bean id="tilesViewResolver" class="org.springframework.web.servlet.view.tiles2.TilesViewResolver">
+    <!--<bean id="tilesViewResolver" class="org.springframework.web.servlet.view.tiles2.TilesViewResolver">
         <property name="order" value="0" />
-    </bean>
+    </bean>-->
 
     <!-- Tiles configuration -->
-    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+    <!--<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
         <property name="definitions">
             <list>
-                <!-- all definitions have to be loaded -->
+                all definitions have to be loaded
                 <value>/WEB-INF/**/*tiles*.xml</value>
             </list>
         </property>
-    </bean>
+    </bean>-->
 
 </beans>

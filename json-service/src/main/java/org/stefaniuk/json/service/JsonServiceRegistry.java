@@ -185,6 +185,8 @@ public class JsonServiceRegistry {
      */
     private JsonServiceInvoker lookup(Class<?> clazz) {
 
+        // FIXME: throw "the" exception if class is not in the registry
+
         return registry.get(clazz.getName());
     }
 

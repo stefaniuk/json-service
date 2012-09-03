@@ -7,4 +7,25 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
 
+    <!-- chinook.sqlite -->
+    <bean id="sqliteDataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
+        <property name="driverClassName" value="org.sqlite.JDBC" />
+        <property name="url" value="jdbc:sqlite:chinook.sqlite" />
+    </bean>
+
+    <!-- artistDao -->
+    <bean id="artistDao" class="org.stefaniuk.json.service.example3.model.ArtistDao">
+        <property name="dataSource" ref="sqliteDataSource" />
+    </bean>
+
+    <!-- albumDao -->
+    <bean id="albumDao" class="org.stefaniuk.json.service.example3.model.AlbumDao">
+        <property name="dataSource" ref="sqliteDataSource" />
+    </bean>
+
+    <!-- trackDao -->
+    <bean id="trackDao" class="org.stefaniuk.json.service.example3.model.TrackDao">
+        <property name="dataSource" ref="sqliteDataSource" />
+    </bean>
+
 </beans>

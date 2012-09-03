@@ -7,4 +7,19 @@
     <!-- JSON Service (JSON-RPC) -->
     <bean id="jsonService" class="org.stefaniuk.json.service.JsonServiceRegistry" />
 
+    <!-- albumService -->
+    <bean id="albumService" class="org.stefaniuk.json.service.example3.service.AlbumService">
+        <property name="service" ref="jsonService" />
+    </bean>
+
+    <!-- artistService -->
+    <bean id="artistService" class="org.stefaniuk.json.service.example3.service.ArtistService">
+        <property name="service" ref="jsonService" />
+    </bean>
+
+    <!-- trackService -->
+    <bean id="trackService" class="org.stefaniuk.json.service.example3.service.TrackService">
+        <property name="service" ref="jsonService" />
+    </bean>
+
 </beans>

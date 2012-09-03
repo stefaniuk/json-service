@@ -40,6 +40,10 @@
         <springframework.version>3.1.2.RELEASE</springframework.version>
         <!-- Commons BeanUtils -->
         <commons.beanutils.version>1.8.3</commons.beanutils.version>
+        <!-- SQLite -->
+        <sqlite.version>3.7.2</sqlite.version>
+        <!-- SQLJet -->
+        <sqljet.version>1.1.4</sqljet.version>
         <!-- Tiles -->
         <tiles.version>3.0.1</tiles.version>
         <!-- JUnit -->
@@ -162,6 +166,18 @@
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>${commons.beanutils.version}</version>
+        </dependency>
+        <!-- SQLite -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>${sqlite.version}</version>
+        </dependency>
+        <!-- SQLJet -->
+        <dependency>
+            <groupId>org.tmatesoft.sqljet</groupId>
+            <artifactId>sqljet</artifactId>
+            <version>${sqljet.version}</version>
         </dependency>
         <!-- Tiles -->
         <dependency>

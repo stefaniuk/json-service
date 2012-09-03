@@ -43,7 +43,7 @@ public class AbstractService<D> {
      * @param jsonService JSON service (JSON-RPC)
      */
     @Autowired
-    public void setServer(JsonServiceRegistry jsonService) {
+    public void setService(JsonServiceRegistry jsonService) {
 
         jsonService.register(this);
     }

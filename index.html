@@ -36,10 +36,21 @@
     <div id="main_content_wrap" class="outer">
         <section id="main_content" class="inner">
 
-            <h3>Usage Example 1: Java Servlet.</h3>
+            <h2>What is JSON-RPC?</h2>
+            <p>TODO</p>
+
+            <h2>Overview</h2>
+            <p>TODO</p>
+
+            <h2>Features</h2>
+            <p>TODO</p>
+
+            <h2>Examples</h2>
+
+            <h3>Usage Example 1: Java Servlet</h3>
 
             <span class="file-name">CalculatorService.java</span>
-            <pre class="brush: java">
+            <pre class="brush: java; highlight: [3]">
                 public class CalculatorService {
 
                     @JsonService
@@ -70,7 +81,7 @@
             </pre>
 
             <span class="file-name">JsonRpcController.java</span>
-            <pre class="brush: java">
+            <pre class="brush: java; highlight: [3,6,15,30]">
                 public class JsonRpcController extends HttpServlet {
 
                     private static JsonServiceRegistry service = new JsonServiceRegistry();
@@ -122,7 +133,7 @@
             </pre>
 
             <span class="file-name">index.jsp</span>
-            <pre class="brush: javascript">
+            <pre class="brush: javascript; highlight: [9]">
                 require([
                     'dojo/ready',
                     'dojox/rpc/Service',
@@ -152,7 +163,7 @@
                 });
             </pre>
 
-            <h3>Usage Example 2: Simple Spring Framework integration.</h3>
+            <h3>Usage Example 2: Simple Spring Framework integration</h3>
 
             <span class="file-name">CalculatorService.java</span>
             <pre class="brush: java">
@@ -186,7 +197,7 @@
             </pre>
 
             <span class="file-name">JsonRpcController.java</span>
-            <pre class="brush: java">
+            <pre class="brush: java highlight: [11]">
                 @Controller
                 @RequestMapping(value = &quot;/jsonrpc/*&quot;)
                 public class JsonRpcController {
@@ -204,7 +215,7 @@
             </pre>
 
             <span class="file-name">service.xml</span>
-            <pre class="brush: xml">
+            <pre class="brush: xml highlight: [8]">
                 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
                 &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
                     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -253,6 +264,23 @@
 
                 });
             </pre>
+
+            <h3>Usage Example 3: Advanced Spring Framework integration</h3>
+            <p>TODO</p>
+
+            <h2>Download</h2>
+
+            <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-1.1.0.jar">json-service-1.1.0.jar</a>
+            <br />
+            <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-1.1.0-sources.jar">json-service-1.1.0-sources.jar</a>
+            <br />
+            <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-1.1.0-javadoc.jar">json-service-1.1.0-javadoc.jar</a>
+            <br />
+            <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-example1.war">json-service-example1.war</a>
+            <br />
+            <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-example2.war">json-service-example2.war</a>
+            <br />
+            <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-example3.war">json-service-example3.war</a>
 
         </section>
     </div>

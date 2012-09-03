@@ -13,6 +13,8 @@ Quick Start
 3. Build project using Maven command `mvn clean install source:jar javadoc:javadoc javadoc:jar` from project's main directory.
 4. Deploy example projects to your servlet container using WAR files or deployment scripts `json-service-example?/deploy/json-service-example?.xml`.
 
+You can install json-service-1.1.0 in your local Maven repository using `mvn install:install-file "-Dfile=json-service-1.1.0.jar" "-DgroupId=org.stefaniuk.json.service" "-DartifactId=json-service" "-Dversion=1.1.0" "-Dpackaging=jar"`
+
 Useful Resources
 ----------------
 

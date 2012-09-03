@@ -10,7 +10,7 @@
     <!-- chinook.sqlite -->
     <bean id="sqliteDataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
         <property name="driverClassName" value="org.sqlite.JDBC" />
-        <property name="url" value="jdbc:sqlite:chinook.sqlite" />
+        <property name="url" value="jdbc:sqlite:/WEB-INF/classes/chinook.sqlite" />
     </bean>
 
     <!-- artistDao -->

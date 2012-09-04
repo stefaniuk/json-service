@@ -33,13 +33,17 @@ public class AlbumDao extends AbstractModelDao<Album> {
     @Override
     public List<Album> findAll() {
 
+        return null;
+    }
+
+    public List<Album> findByArtistId(Integer artistId) {
+
         List<Album> list = new ArrayList<Album>();
 
         String sql = String.format("select * from %1$s", TABLE_NAME);
         List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
         for(Map<String, Object> row: rows) {
-            // TODO
-            //list.add(new Album(row));
+            list.add(new Album(row));
         }
 
         return list;

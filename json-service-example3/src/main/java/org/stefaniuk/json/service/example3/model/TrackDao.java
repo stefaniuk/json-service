@@ -33,13 +33,17 @@ public class TrackDao extends AbstractModelDao<Track> {
     @Override
     public List<Track> findAll() {
 
+        return null;
+    }
+
+    public List<Track> findByAlbumId(Integer albumId) {
+
         List<Track> list = new ArrayList<Track>();
 
         String sql = String.format("select * from %1$s", TABLE_NAME);
         List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
         for(Map<String, Object> row: rows) {
-            // TODO
-            //list.add(new Track(row));
+            list.add(new Track(row));
         }
 
         return list;

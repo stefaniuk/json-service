@@ -8,7 +8,9 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
 
     <!-- chinook.sqlite -->
-    <bean id="sqliteFileDataSource" class="org.stefaniuk.json.service.example3.datasource.SQLiteFileDataSource" scope="globalSession" />
+    <bean id="sqliteFileDataSource" class="org.stefaniuk.json.service.example3.datasource.SQLiteFileDataSource" scope="globalSession">
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
 
     <!-- artistDao -->
     <bean id="artistDao" class="org.stefaniuk.json.service.example3.model.ArtistDao">

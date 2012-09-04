@@ -2,24 +2,21 @@ package org.stefaniuk.json.service.example3.datasource;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-public class SQLiteFileDataSource extends SingleConnectionDataSource {
+public class SQLiteFileDataSource extends SingleConnectionDataSource implements InitializingBean {
 
     @Autowired
     private HttpSession session;
 
-    //<property name="driverClassName" value="org.sqlite.JDBC" />
-    //<property name="url" value="jdbc:sqlite:/WEB-INF/classes/chinook.sqlite" />
+    @Override
+    public void afterPropertiesSet() throws Exception {
 
-    public SQLiteFileDataSource() {
-
-        super();
-
-        //System.out.println("-----------------------------------");
-        //System.out.println(session.toString());
-        //System.out.println(session.getServletContext().getRealPath("/WEB-INF/classes") + "/chinook.sqlite");
+        // This is necessary due to the relative path to the database file and not possible to do from XML configuration file. 
+        setDriverClassName("org.sqlite.JDBC");
+        setUrl("jdbc:sqlite:" + session.getServletContext().getRealPath("/WEB-INF/classes") + "/chinook.sqlite");
     }
 
 }

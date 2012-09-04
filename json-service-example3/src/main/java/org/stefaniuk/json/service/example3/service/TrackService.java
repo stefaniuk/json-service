@@ -9,9 +9,9 @@ import org.stefaniuk.json.service.example3.model.TrackDao;
 public class TrackService extends AbstractService<TrackDao> {
 
     @JsonService
-    public List<Track> list() {
+    public List<Track> list(Integer albumId) {
 
-        return dao.findAll();
+        return dao.findByAlbumId(albumId);
     }
 
 }

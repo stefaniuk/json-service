@@ -9,8 +9,8 @@ import org.stefaniuk.json.service.example3.model.AlbumDao;
 public class AlbumService extends AbstractService<AlbumDao> {
 
     @JsonService
-    public List<Album> list() {
+    public List<Album> list(Integer artistId) {
 
-        return dao.findAll();
+        return dao.findByArtistId(artistId);
     }
 }

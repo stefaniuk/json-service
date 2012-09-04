@@ -34,12 +34,12 @@ public class Track extends AbstractModel {
     public Track(Map<String, Object> row) {
 
         setId((Integer) row.get(getColumnName(this.getClass(), "id")));
-        setId((Integer) row.get(getColumnName(this.getClass(), "name")));
-        setId((Integer) row.get(getColumnName(this.getClass(), "albumId")));
-        setId((Integer) row.get(getColumnName(this.getClass(), "composer")));
-        setId((Integer) row.get(getColumnName(this.getClass(), "miliseconds")));
-        setId((Integer) row.get(getColumnName(this.getClass(), "bytes")));
-        setId((Integer) row.get(getColumnName(this.getClass(), "unitPrice")));     
+        setName((String) row.get(getColumnName(this.getClass(), "name")));
+        setAlbumId((Integer) row.get(getColumnName(this.getClass(), "albumId")));
+        setComposer((String) row.get(getColumnName(this.getClass(), "composer")));
+        setMiliseconds((Integer) row.get(getColumnName(this.getClass(), "miliseconds")));
+        setBytes((Integer) row.get(getColumnName(this.getClass(), "bytes")));
+        setUnitPrice((Double) row.get(getColumnName(this.getClass(), "unitPrice")));     
     }
 
     public Integer getId() {

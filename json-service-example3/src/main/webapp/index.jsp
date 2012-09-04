@@ -12,21 +12,32 @@
         ], function(ready, Service) {
             ready(function() {
 
-                // create JSON-RPC service
-                service = new Service('controller/jsonrpc/');
+                // create JSON-RPC services
+                var artistService = new Service('chinook/service/artist');
+                var albumService = new Service('chinook/service/album');
+                var trackService = new Service('chinook/service/track');
 
-                // call JSON-RPC methods
-                service.add(12345, 54321).then(function(result) {
-                    console.log('(add)', result);
-                });
-                service.subtract(12345, 54321).then(function(result) {
-                    console.log('(subtract)', result);
-                });
-                service.multiple(12345, 54321).then(function(result) {
-                    console.log('(multiple)', result);
-                });
-                service.divide(12345, 54321).then(function(result) {
-                    console.log('(divide)', result);
+                var count = 1;
+                var artistId = 87; // Guns N' Roses
+                artistService.list().then(function(artists) {
+                    albumService.list(artists[artistId].id).then(function(albums) {
+                        for(var i in albums) {
+                            var album = albums[i];
+                            (function(album) { // this closure is requried to save a reference to the current album
+                                trackService.list(album.id).then(function(tracks) {
+                                    for(var j in tracks) {
+                                        var track = tracks[j];
+                                        console.log(
+                                            count++, ' - ',
+                                            artists[artistId].name, ' - ',
+                                            album.title, ' - ',
+                                            track.name
+                                        );
+                                    }
+                                });
+                            })(album); // end: closure
+                        }
+                    });
                 });
 
             });

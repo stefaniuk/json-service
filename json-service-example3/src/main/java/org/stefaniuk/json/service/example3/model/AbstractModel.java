@@ -39,7 +39,8 @@ public abstract class AbstractModel {
     public AbstractModel(Map<String, Object> row) {
 
         // TODO
-        //setId((Integer) row.get(getColumnName(this.getClass(), "id")));
+        // setId((Integer) row.get(getColumnName(this.getClass(), "id")));
+        // ...
 
     }
 

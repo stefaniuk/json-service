@@ -40,7 +40,7 @@ public class AlbumDao extends AbstractModelDao<Album> {
 
         List<Album> list = new ArrayList<Album>();
 
-        String sql = String.format("select * from %1$s", TABLE_NAME);
+        String sql = String.format("select * from %1$s where ArtistId = " + artistId, TABLE_NAME);
         List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
         for(Map<String, Object> row: rows) {
             list.add(new Album(row));

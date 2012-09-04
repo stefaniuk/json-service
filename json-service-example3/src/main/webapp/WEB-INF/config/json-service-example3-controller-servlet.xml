@@ -6,9 +6,6 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <!-- load view configuration -->
-    <import resource="view.xml" />
-
     <!-- make use of annotation based configuration -->
     <context:component-scan base-package="org.stefaniuk.json.service.example3" />
     <context:annotation-config />

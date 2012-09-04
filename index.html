@@ -45,10 +45,12 @@
 
             <h2>Examples</h2>
 
-            <h3>Usage Example 1: Java Servlet</h3>
+            <h3>Example 1: Java Servlet</h3>
+
+            <p>Download <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-example1.war">json-service-example1.war</a></p>
 
             <span class="file-name">CalculatorService.java</span>
-            <pre class="brush: java; highlight: [3]">
+            <pre class="brush: java; highlight: [3]; collapse: true">
                 public class CalculatorService {
 
                     @JsonService
@@ -79,7 +81,7 @@
             </pre>
 
             <span class="file-name">JsonRpcController.java</span>
-            <pre class="brush: java; highlight: [3,6,15,30]">
+            <pre class="brush: java; highlight: [3,6,15,30]; collapse: true">
                 public class JsonRpcController extends HttpServlet {
 
                     private static JsonServiceRegistry service = new JsonServiceRegistry();
@@ -117,7 +119,7 @@
             </pre>
 
             <span class="file-name">web.xml</span>
-            <pre class="brush: xml">
+            <pre class="brush: xml; collapse: true">
                 &lt;servlet&gt;
                     &lt;display-name&gt;servlet&lt;/display-name&gt;
                     &lt;servlet-name&gt;servlet&lt;/servlet-name&gt;
@@ -131,7 +133,7 @@
             </pre>
 
             <span class="file-name">index.jsp</span>
-            <pre class="brush: javascript; highlight: [9]">
+            <pre class="brush: javascript; highlight: [9]; collapse: true">
                 require([
                     'dojo/ready',
                     'dojox/rpc/Service',
@@ -161,10 +163,12 @@
                 });
             </pre>
 
-            <h3>Usage Example 2: Simple Spring Framework integration</h3>
+            <h3>Example 2: Simple Spring Framework integration</h3>
+
+            <p>Download <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-example2.war">json-service-example2.war</a><p>
 
             <span class="file-name">CalculatorService.java</span>
-            <pre class="brush: java">
+            <pre class="brush: java; collapse: true">
                 public class CalculatorService {
 
                     @JsonService
@@ -195,7 +199,7 @@
             </pre>
 
             <span class="file-name">JsonRpcController.java</span>
-            <pre class="brush: java; highlight: [11]">
+            <pre class="brush: java; highlight: [11]; collapse: true">
                 @Controller
                 @RequestMapping(value = &quot;/jsonrpc/*&quot;)
                 public class JsonRpcController {
@@ -213,7 +217,7 @@
             </pre>
 
             <span class="file-name">service.xml</span>
-            <pre class="brush: xml; highlight: [8]">
+            <pre class="brush: xml; highlight: [8]; collapse: true">
                 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
                 &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
                     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -233,7 +237,7 @@
             </pre>
 
             <span class="file-name">index.jsp</span>
-            <pre class="brush: javascript">
+            <pre class="brush: javascript; collapse: true">
                 require([
                     'dojo/ready',
                     'dojox/rpc/Service',
@@ -263,10 +267,12 @@
                 });
             </pre>
 
-            <h3>Usage Example 3: Advanced Spring Framework integration</h3>
+            <h3>Example 3: Advanced Spring Framework integration</h3>
+
+            <p>Download <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-example3.war">json-service-example3.war</a></p>
 
             <span class="file-name">Album.java</span>
-            <pre class="brush: java; highlight: [20]">
+            <pre class="brush: java; highlight: [20]; collapse: true">
                 @ModelTable(name = &quot;Album&quot;)
                 public class Album extends AbstractModel {
 
@@ -327,7 +333,7 @@
             </pre>
 
             <span class="file-name">AlbumDao.java</span>
-            <pre class="brush: java; highlight: [33, 40]">
+            <pre class="brush: java; highlight: [33, 40]; collapse: true">
                 public class AlbumDao extends AbstractModelDao&lt;Album&gt; {
 
                     @Override
@@ -395,7 +401,7 @@
             </pre>
 
             <span class="file-name">AlbumService.java</span>
-            <pre class="brush: java; highlight: [6]">
+            <pre class="brush: java; highlight: [6]; collapse: true">
                 public class AlbumService extends AbstractService&lt;AlbumDao&gt; {
 
                     @JsonService
@@ -407,7 +413,7 @@
             </pre>
 
             <span class="file-name">ChinookController.java</span>
-            <pre class="brush: java; highlight: [13]">
+            <pre class="brush: java; highlight: [13]; collapse: true">
                 @Controller
                 @RequestMapping(value = &quot;/chinook/*&quot;)
                 public class ChinookController extends AbstractController {
@@ -436,7 +442,7 @@
             </pre>
 
             <span class="file-name">index.jsp</span>
-            <pre class="brush: javascript">
+            <pre class="brush: javascript; collapse: true">
                 require([
                     'dojo/ready',
                     'dojox/rpc/Service',
@@ -476,6 +482,9 @@
 
                 });
             </pre>
+
+            <h3>Example 4: Spring Framework, Hibernate and Dojo Store</h3>
+            <p>TODO</p>
 
             <h2>Download</h2>
 

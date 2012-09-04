@@ -434,6 +434,10 @@ h2 {
     color: #800000;
 }
 
+.file-name {
+    color: #8B4513;
+}
+
 .syntaxhighlighter {
     font-size: 12px !important;
 }

@@ -5,8 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="JSON Service : JSON-RPC library for Java" />
     <title>JSON Service - JSON-RPC library for Java</title>
-    <!--<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/shCoreRDark.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/shThemeRDark.css">-->
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/shCoreEclipse.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/shThemeEclipse.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/main.css">
@@ -197,7 +195,7 @@
             </pre>
 
             <span class="file-name">JsonRpcController.java</span>
-            <pre class="brush: java highlight: [11]">
+            <pre class="brush: java; highlight: [11]">
                 @Controller
                 @RequestMapping(value = &quot;/jsonrpc/*&quot;)
                 public class JsonRpcController {
@@ -215,7 +213,7 @@
             </pre>
 
             <span class="file-name">service.xml</span>
-            <pre class="brush: xml highlight: [8]">
+            <pre class="brush: xml; highlight: [8]">
                 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
                 &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
                     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -266,7 +264,218 @@
             </pre>
 
             <h3>Usage Example 3: Advanced Spring Framework integration</h3>
-            <p>TODO</p>
+
+            <span class="file-name">Album.java</span>
+            <pre class="brush: java; highlight: [20]">
+                @ModelTable(name = &quot;Album&quot;)
+                public class Album extends AbstractModel {
+
+                    @ModelColumn(name = &quot;AlbumId&quot;)
+                    private Integer id;
+
+                    @ModelColumn(name = &quot;Title&quot;)
+                    private String title;
+
+                    @ModelColumn(name = &quot;ArtistId&quot;)
+                    private Integer artistId;
+
+                    public Album(Integer id, String title, Integer artistId) {
+
+                        this.id = id;
+                        this.title = title;
+                        this.artistId = artistId;
+                    }
+
+                    public Album(Map&lt;String, Object&gt; row) {
+
+                        setId((Integer) row.get(getColumnName(this.getClass(), &quot;id&quot;)));
+                        setTitle((String) row.get(getColumnName(this.getClass(), &quot;title&quot;)));
+                        setArtistId((Integer) row.get(getColumnName(this.getClass(), &quot;artistId&quot;)));
+                    }
+
+                    public Integer getId() {
+
+                        return id;
+                    }
+
+                    public void setId(Integer id) {
+
+                        this.id = id;
+                    }
+
+                    public String getTitle() {
+
+                        return title;
+                    }
+
+                    public void setTitle(String title) {
+
+                        this.title = title;
+                    }
+
+                    public Integer getArtistId() {
+
+                        return artistId;
+                    }
+
+                    public void setArtistId(Integer artistId) {
+
+                        this.artistId = artistId;
+                    }
+
+                }
+            </pre>
+
+            <span class="file-name">AlbumDao.java</span>
+            <pre class="brush: java; highlight: [33, 40]">
+                public class AlbumDao extends AbstractModelDao&lt;Album&gt; {
+
+                    @Override
+                    public Integer create(Album model) {
+
+                        return null;
+                    }
+
+                    @Override
+                    public Integer update(Album model) {
+
+                        return null;
+                    }
+
+                    @Override
+                    public Integer update(Album model, Album changed) {
+
+                        return null;
+                    }
+
+                    @Override
+                    public Integer remove(Album model) {
+
+                        return null;
+                    }
+
+                    @Override
+                    public List&lt;Album&gt; findAll() {
+
+                        return null;
+                    }
+
+                    public List&lt;Album&gt; findByArtistId(Integer artistId) {
+
+                        List&lt;Album&gt; list = new ArrayList&lt;Album&gt;();
+
+                        String sql = String.format(&quot;select * from %1$s where ArtistId = &quot; + artistId, TABLE_NAME);
+                        List&lt;Map&lt;String, Object&gt;&gt; rows = getJdbcTemplate().queryForList(sql);
+                        for(Map&lt;String, Object&gt; row: rows) {
+                            list.add(new Album(row));
+                        }
+
+                        return list;
+                    }
+
+                    @Override
+                    public Album findById(Integer id) {
+
+                        return null;
+                    }
+
+                    @Override
+                    public Integer findIdByModel(Album model) {
+
+                        return null;
+                    }
+
+                    @Override
+                    public Integer countAll() {
+
+                        return null;
+                    }
+
+                }
+            </pre>
+
+            <span class="file-name">AlbumService.java</span>
+            <pre class="brush: java; highlight: [6]">
+                public class AlbumService extends AbstractService&lt;AlbumDao&gt; {
+
+                    @JsonService
+                    public List&lt;Album&gt; list(Integer artistId) {
+
+                        return dao.findByArtistId(artistId);
+                    }
+                }
+            </pre>
+
+            <span class="file-name">ChinookController.java</span>
+            <pre class="brush: java; highlight: [13]">
+                @Controller
+                @RequestMapping(value = &quot;/chinook/*&quot;)
+                public class ChinookController extends AbstractController {
+
+                    @Override
+                    @RequestMapping(&quot;service/{service}&quot;)
+                    public ResponseEntity&lt;String&gt; service(HttpServletRequest request, HttpServletResponse response,
+                            @PathVariable String service) throws Exception {
+
+                        ResponseEntity&lt;String&gt; re = null;
+
+                        if(service.equals(&quot;artist&quot;)) {
+                            re = handleJsonRpc(request, response, ArtistService.class);
+                        }
+                        else if(service.equals(&quot;album&quot;)) {
+                            re = handleJsonRpc(request, response, AlbumService.class);
+                        }
+                        else if(service.equals(&quot;track&quot;)) {
+                            re = handleJsonRpc(request, response, TrackService.class);
+                        }
+
+                        return re;
+                    }
+
+                }
+            </pre>
+
+            <span class="file-name">index.jsp</span>
+            <pre class="brush: javascript">
+                require([
+                    'dojo/ready',
+                    'dojox/rpc/Service',
+                    'dojox/rpc/JsonRPC' // JsonRPC has to be loaded too
+                ], function(ready, Service) {
+                    ready(function() {
+
+                        // create JSON-RPC services
+                        var artistService = new Service('chinook/service/artist');
+                        var albumService = new Service('chinook/service/album');
+                        var trackService = new Service('chinook/service/track');
+
+                        var count = 1;
+                        var artistId = 87;
+                        artistService.list().then(function(artists) {
+                            albumService.list(artists[artistId].id).then(function(albums) {
+                                for(var i in albums) {
+                                    var album = albums[i];
+                                    (function(album) { // this closure is requried to save a reference to the current album
+                                        trackService.list(album.id).then(function(tracks) {
+                                            for(var j in tracks) {
+                                                var track = tracks[j];
+                                                console.log(
+                                                    count++, ' - ',
+                                                    artists[artistId].name, ' - ',
+                                                    album.title, ' - ',
+                                                    track.name
+                                                );
+                                            }
+                                        });
+                                    })(album); // end: closure
+                                }
+                            });
+                        });
+
+                    });
+
+                });
+            </pre>
 
             <h2>Download</h2>
 

@@ -165,7 +165,7 @@
 
             <h3>Example 2: Simple Spring Framework integration</h3>
 
-            <p>Download <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-example2.war">json-service-example2.war</a><p>
+            <p>Download <a href="https://github.com/stefaniuk/json-service/raw/master/build/json-service-example2.war">json-service-example2.war</a></p>
 
             <span class="file-name">CalculatorService.java</span>
             <pre class="brush: java; collapse: true">
@@ -439,6 +439,50 @@
                     }
 
                 }
+            </pre>
+
+            <span class="file-name">service.xml</span>
+            <pre class="brush: xml; highlight: [10]; collapse: true">
+                &lt;!-- JSON Service (JSON-RPC) --&gt;
+                &lt;bean id=&quot;jsonService&quot; class=&quot;org.stefaniuk.json.service.JsonServiceRegistry&quot; /&gt;
+
+                &lt;!-- artistService --&gt;
+                &lt;bean id=&quot;artistService&quot; class=&quot;org.stefaniuk.json.service.example3.service.ArtistService&quot;&gt;
+                    &lt;property name=&quot;service&quot; ref=&quot;jsonService&quot; /&gt;
+                &lt;/bean&gt;
+
+                &lt;!-- albumService --&gt;
+                &lt;bean id=&quot;albumService&quot; class=&quot;org.stefaniuk.json.service.example3.service.AlbumService&quot;&gt;
+                    &lt;property name=&quot;service&quot; ref=&quot;jsonService&quot; /&gt;
+                &lt;/bean&gt;
+
+                &lt;!-- trackService --&gt;
+                &lt;bean id=&quot;trackService&quot; class=&quot;org.stefaniuk.json.service.example3.service.TrackService&quot;&gt;
+                    &lt;property name=&quot;service&quot; ref=&quot;jsonService&quot; /&gt;
+                &lt;/bean&gt;
+            </pre>
+
+            <span class="file-name">persistence.xml</span>
+            <pre class="brush: xml; highlight: [12]; collapse: true">
+                &lt;!-- chinook.sqlite --&gt;
+                &lt;bean id=&quot;sqliteFileDataSource&quot; class=&quot;org.stefaniuk.json.service.example3.datasource.SQLiteFileDataSource&quot; scope=&quot;globalSession&quot;&gt;
+                    &lt;aop:scoped-proxy proxy-target-class=&quot;false&quot; /&gt;
+                &lt;/bean&gt;
+
+                &lt;!-- artistDao --&gt;
+                &lt;bean id=&quot;artistDao&quot; class=&quot;org.stefaniuk.json.service.example3.model.ArtistDao&quot;&gt;
+                    &lt;property name=&quot;dataSource&quot; ref=&quot;sqliteFileDataSource&quot; /&gt;
+                &lt;/bean&gt;
+
+                &lt;!-- albumDao --&gt;
+                &lt;bean id=&quot;albumDao&quot; class=&quot;org.stefaniuk.json.service.example3.model.AlbumDao&quot;&gt;
+                    &lt;property name=&quot;dataSource&quot; ref=&quot;sqliteFileDataSource&quot; /&gt;
+                &lt;/bean&gt;
+
+                &lt;!-- trackDao --&gt;
+                &lt;bean id=&quot;trackDao&quot; class=&quot;org.stefaniuk.json.service.example3.model.TrackDao&quot;&gt;
+                    &lt;property name=&quot;dataSource&quot; ref=&quot;sqliteFileDataSource&quot; /&gt;
+                &lt;/bean&gt;
             </pre>
 
             <span class="file-name">index.jsp</span>

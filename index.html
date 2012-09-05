@@ -34,14 +34,65 @@
     <div id="main_content_wrap" class="outer">
         <section id="main_content" class="inner">
 
-            <h2>What is JSON-RPC?</h2>
-            <p>TODO</p>
+            <h2>What is JSON Service?</h2>
+
+            <p>JSON Service is a JSON-RPC server implementation. It supports version 2 of the specification and additionally it provides an implementation of the Service Mapping Description (SMD) specification for providing service metadata to service consumers.</p>
 
             <h2>Overview</h2>
-            <p>TODO</p>
+            <p>JSON-RPC is a lightweight Remote Procedure Call protocol that utilises JSON for its messaging envelopes. In a typical situation you will simply need to:</p>
+            <ul>
+                <li>Instantiate the server object</li>
+                <li>Register one or more classes/objects and their methods</li>
+                <li>Produce SMD or handle() the request</li>
+            </ul>
+            <p>JSON Service performs reflection on any attached classes and uses that information to build both the SMD and enforce method call signatures.</p>
 
             <h2>Features</h2>
             <p>TODO</p>
+
+            <h2>Dependencies</h2>
+            <p>Maven dependencies that need to be included in the POM file:</p>
+            <pre class="brush: xml; gutter: false">
+                &lt;!-- SLF4J --&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+                    &lt;artifactId&gt;jcl-over-slf4j&lt;/artifactId&gt;
+                    &lt;version&gt;1.6.6&lt;/version&gt;
+                &lt;/dependency&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+                    &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+                    &lt;version&gt;1.6.6&lt;/version&gt;
+                &lt;/dependency&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+                    &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+                    &lt;version&gt;1.6.6&lt;/version&gt;
+                &lt;/dependency&gt;
+                &lt;!-- log4j --&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;log4j&lt;/groupId&gt;
+                    &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+                    &lt;version&gt;1.2.17&lt;/version&gt;
+                &lt;/dependency&gt;
+                &lt;!-- Jackson --&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.codehaus.jackson&lt;/groupId&gt;
+                    &lt;artifactId&gt;jackson-core-lgpl&lt;/artifactId&gt;
+                    &lt;version&gt;1.9.9&lt;/version&gt;
+                &lt;/dependency&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.codehaus.jackson&lt;/groupId&gt;
+                    &lt;artifactId&gt;jackson-mapper-lgpl&lt;/artifactId&gt;
+                    &lt;version&gt;1.9.9&lt;/version&gt;
+                &lt;/dependency&gt;
+                &lt;!-- Spring Framework (optional) --&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-web&lt;/artifactId&gt;
+                    &lt;version&gt;3.1.2.RELEASE&lt;/version&gt;
+                &lt;/dependency&gt;
+            </pre>
 
             <h2>Examples</h2>
 

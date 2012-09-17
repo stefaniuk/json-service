@@ -1,0 +1,76 @@
+<div class="nhs-grid-nhsgrid-wrapper">
+    <div id="${id}_container" class="nhs-grid-nhsgrid-container"
+        data-dojo-type="nhs/BorderContainer"
+        data-dojo-props="
+            design: 'headline',
+            gutters: false,
+            liveSplitters: false"
+        >
+
+            <!-- top pane -->
+            <div id="${id}_pane_top" class="nhs-grid-nhsgrid-pane-top"
+                data-dojo-type="dijit/layout/ContentPane"
+                data-dojo-props="region: 'top'"
+            >
+
+                <button data-dojo-type="dijit/form/Button"
+                    data-dojo-props="
+                        iconClass:'nhs-grid-nhsgrid-icon nhs-grid-nhsgrid-icon-refresh',
+                        showLabel: false"
+                    data-dojo-attach-event="onClick:onRefreshClick"
+                    type="button"
+                >Refresh</button>
+                <button data-dojo-type="dijit/form/Button"
+                    data-dojo-props="
+                        iconClass:'nhs-grid-nhsgrid-icon nhs-grid-nhsgrid-icon-add',
+                        showLabel: false"
+                    data-dojo-attach-event="onClick:onAddClick"
+                    type="button"
+                >Add</button>
+                <button data-dojo-type="dijit/form/Button"
+                    data-dojo-props="
+                        iconClass:'nhs-grid-nhsgrid-icon nhs-grid-nhsgrid-icon-delete',
+                        showLabel: false"
+                    data-dojo-attach-event="onClick:onRemoveClick"
+                    type="button"
+                >Remove</button>
+                <button data-dojo-type="dijit/form/Button"
+                    data-dojo-props="
+                        iconClass:'nhs-grid-nhsgrid-icon nhs-grid-nhsgrid-icon-save',
+                        showLabel: false"
+                    data-dojo-attach-event="onClick:onSaveClick"
+                    type="button"
+                >Save</button>
+                <button data-dojo-type="dijit/form/Button"
+                    data-dojo-props="
+                        iconClass:'nhs-grid-nhsgrid-icon nhs-grid-nhsgrid-icon-print',
+                        showLabel: false"
+                    data-dojo-attach-event="onClick:onPrintClick"
+                    type="button"
+                >Print</button>
+                <button data-dojo-type="dijit/form/Button"
+                    data-dojo-props="
+                        iconClass:'nhs-grid-nhsgrid-icon nhs-grid-nhsgrid-icon-csv-export',
+                        showLabel: false"
+                    data-dojo-attach-event="onClick:onExportCsvClick"
+                    type="button"
+                >Export CSV</button>
+
+                <span class="nhs-grid-nhsgrid-button-separator">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+            </div>
+
+            <!-- center pane -->
+            <div id="${id}_pane_center" class="nhs-grid-nhsgrid-pane-center"
+                data-dojo-type="dijit/layout/ContentPane"
+                data-dojo-props="region: 'center'"
+            >
+
+                <div class="nhs-grid-nhsgrid-grid-node"
+                    data-dojo-attach-point="gridNode"
+                ></div>
+
+            </div>
+
+    </div>
+</div>

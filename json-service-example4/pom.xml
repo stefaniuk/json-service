@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.stefaniuk.json.service</groupId>
-    <artifactId>parent</artifactId>
-    <packaging>pom</packaging>
-    <name>parent</name>
+    <artifactId>json-service-example4</artifactId>
+    <packaging>war</packaging>
+    <name>json-service-example4</name>
     <version>1.1.0</version>
     <description>JSON-RPC library for Java</description>
     <url>http://stefaniuk.github.com/json-service/</url>
@@ -38,22 +38,11 @@
         <jackson.version>1.9.9</jackson.version>
         <!-- Spring Framework -->
         <springframework.version>3.1.2.RELEASE</springframework.version>
-        <!-- Commons BeanUtils -->
-        <commons.beanutils.version>1.8.3</commons.beanutils.version>
         <!-- SQLite -->
         <sqlite.version>3.7.2</sqlite.version>
         <!-- SQLJet -->
         <sqljet.version>1.1.4</sqljet.version>
-        <!-- JUnit -->
-        <junit.version>4.10</junit.version>
     </properties>
-    <modules>
-        <module>json-service</module>
-        <module>json-service-example1</module>
-        <module>json-service-example2</module>
-        <module>json-service-example3</module>
-        <module>json-service-example4</module>
-    </modules>
     <repositories>
         <repository>
             <id>java.net2</id>
@@ -61,9 +50,6 @@
             <url>http://download.java.net/maven/2</url>
         </repository>
     </repositories>
-
-    <!-- Duplicated dependencies section in the parent POM is required as Eclipse does not resolve Maven dependencies for included modules. -->
-
     <dependencies>
         <!-- Servlet API -->
         <dependency>
@@ -160,12 +146,6 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
-        <!-- Commons BeanUtils -->
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>${commons.beanutils.version}</version>
-        </dependency>
         <!-- SQLite -->
         <dependency>
             <groupId>org.xerial</groupId>
@@ -178,12 +158,25 @@
             <artifactId>sqljet</artifactId>
             <version>${sqljet.version}</version>
         </dependency>
-        <!-- JUnit -->
+        <!-- JSON Service -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
+            <groupId>org.stefaniuk.json.service</groupId>
+            <artifactId>json-service</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>${project.name}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

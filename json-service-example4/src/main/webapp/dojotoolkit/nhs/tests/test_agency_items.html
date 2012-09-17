@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CSS Reporting (Dojo Toolkit)</title>
+    <style type="text/css">
+        @import "../../dojo/resources/dojo.css";
+        @import "../../dijit/themes/claro/claro.css";
+        @import "../../nhs/themes/nhs/nhs.css";
+    </style>
+    <script type="text/javascript" src="../../dojo/dojo.js" data-dojo-config="async: 0, parseOnLoad: true, locale: 'en'"></script>
+    <script type="text/javascript">
+
+        require([
+            'dojo/ready',
+            'dijit/layout/BorderContainer',
+            'dijit/layout/ContentPane'
+        ], function(ready) {
+            ready(function() {
+
+            });
+        });
+    </script>
+</head>
+<body class="claro display-onready">
+    <div id="container" class="container" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline',gutters:true,liveSplitters:false,persist:false">
+        <div id="pane_top" class="pane-top" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
+        </div>
+        <div id="pane_center" class="pane-center" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+
+            TODO
+
+        </div>
+        <div id="pane_bottom" class="pane-bottom" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'bottom'">
+        </div>
+    </div>
+</body>
+</html>

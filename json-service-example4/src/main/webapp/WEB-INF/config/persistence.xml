@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+    <!-- chinook.sqlite -->
+    <bean id="sqliteFileDataSource" class="org.stefaniuk.json.service.example4.datasource.SQLiteFileDataSource" scope="globalSession">
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+
+    <!-- artistDao -->
+    <bean id="artistDao" class="org.stefaniuk.json.service.example4.model.ArtistDao">
+        <property name="dataSource" ref="sqliteFileDataSource" />
+    </bean>
+
+    <!-- albumDao -->
+    <bean id="albumDao" class="org.stefaniuk.json.service.example4.model.AlbumDao">
+        <property name="dataSource" ref="sqliteFileDataSource" />
+    </bean>
+
+    <!-- trackDao -->
+    <bean id="trackDao" class="org.stefaniuk.json.service.example4.model.TrackDao">
+        <property name="dataSource" ref="sqliteFileDataSource" />
+    </bean>
+
+</beans>

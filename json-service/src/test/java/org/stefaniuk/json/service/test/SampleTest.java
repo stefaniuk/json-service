@@ -1,13 +1,10 @@
-package org.stefaniuk.json.service;
-
-import static org.junit.Assert.assertTrue;
+package org.stefaniuk.json.service.test;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.stefaniuk.json.service.SampleClass;
 
 public class SampleTest {
 
@@ -27,10 +24,6 @@ public class SampleTest {
     public void testSomething() {
 
         // Code that tests one thing
-
-        SampleClass sc = new SampleClass("Hello World!");
-        sc.setSampleField("This is a test.");
-        assertTrue("This is a test.".equals(sc.getSampleField()));
     }
 
     @After

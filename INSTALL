@@ -1,0 +1,63 @@
+Build Project
+=============
+
+mvn clean install
+mvn test
+
+How to Use
+==========
+
+Install JAR file
+----------------
+
+    mvn install:install-file "-Dfile=json-service-1.2.0.jar" "-DgroupId=org.stefaniuk.json.service" "-DartifactId=json-service" "-Dversion=1.2.0" "-Dpackaging=jar"
+
+Edit pom.xml
+------------
+
+    <dependency>
+        <groupId>org.stefaniuk.json.service</groupId>
+        <artifactId>json-service</artifactId>
+        <version>1.2.0</version>
+    </dependency>
+
+Create ExampleService bean
+--------------------------
+
+    package org.example.service;
+    import org.stefaniuk.json.service.JsonService;
+    public class ExampleService {
+        @JsonService
+        public String echo(String text) {
+            return text;
+        }
+    }
+
+Edit Spring configuration file
+------------------------------
+
+    <bean id="jsonService" class="org.stefaniuk.json.service.JsonServiceRegistry">
+        <property name="registry">
+            <list>
+                <value>org.example.service.ExampleService</value>
+            </list>
+        </property>
+    </bean>
+
+Edit Spring controller
+----------------------
+
+    @RequestMapping("service/{service}")
+    public ResponseEntity<String> service(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable String service) throws Exception {
+        ResponseEntity<String> re = null;
+        if(service.equals("example")) {
+            re = handleJsonRpc(request, response, ExampleService.class);
+        }
+        return re;
+    }
+    private ResponseEntity<String> handleJsonRpc(HttpServletRequest request, HttpServletResponse response,
+            Class<?> clazz) throws IOException {
+        return JsonServiceUtil.handle(jsonService, request, response, clazz);
+    }
+

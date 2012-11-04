@@ -17,6 +17,18 @@ public class UserTest extends AbstractTest {
     }
 
     @Test
+    public void testGetUserMethod() throws Exception {
+
+        List<Object> parameters = new ArrayList<Object>();
+
+        HttpTester response = tester.callService("/" + service + "/", "getUser", parameters);
+        System.out.println("--------------------------");
+        System.out.println(response.getContent());
+        System.out.println("--------------------------");
+        assertTrue(response.getContent().contains("Daniel Stefaniuk"));
+    }
+
+    @Test
     public void testLoginMethod() throws Exception {
 
         User user = new User("daniel", "53cr3t", "Daniel Stefaniuk", "daniel.stefaniuk@gmail.com");

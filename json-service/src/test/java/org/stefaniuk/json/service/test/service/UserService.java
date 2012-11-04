@@ -6,6 +6,14 @@ import org.stefaniuk.json.service.test.bean.User;
 public class UserService {
 
     @JsonService
+    public User getUser() {
+
+        User user = new User("daniel", "53cr3t", "Daniel Stefaniuk", "daniel.stefaniuk@gmail.com");
+
+        return user;
+    }
+
+    @JsonService
     public Boolean login(User u) {
 
         boolean valid = true;

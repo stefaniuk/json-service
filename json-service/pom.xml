@@ -13,6 +13,31 @@
     <packaging>jar</packaging>
     <name>json-service</name>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- JUnit -->
+        <junit.version>4.10</junit.version>
+        <!-- Jetty Servlet Tester -->
+        <jetty.servlet.tester.version>8.1.7.v20120910</jetty.servlet.tester.version>
+    </properties>
+
+    <dependencies>
+        <!-- JUnit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Jetty Servlet Tester -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>test-jetty-servlet</artifactId>
+            <version>${jetty.servlet.tester.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <finalName>${project.name}-${project.version}</finalName>
         <plugins>

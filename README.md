@@ -1,7 +1,7 @@
 JSON Service 1.2
 ================
 
-**JSON-RPC** library for Java
+**JSON-RPC** library for Java.
 
 Project's [Home Page](http://stefaniuk.github.com/json-service/ "Project's Home Page")
 

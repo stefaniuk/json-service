@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.stefaniuk.json.service</groupId>
         <artifactId>parent</artifactId>
-        <version>1.2.0</version>
+        <version>1.0.0</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
@@ -13,12 +13,18 @@
     <packaging>war</packaging>
     <name>json-service-web</name>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- JSON Service -->
+        <json.service.version>1.2.0-SNAPSHOT</json.service.version>
+    </properties>
+
     <dependencies>
-        <!-- json-service -->
+        <!-- JSON Service -->
         <dependency>
             <groupId>org.stefaniuk.json.service</groupId>
             <artifactId>json-service</artifactId>
-            <version>${project.version}</version>
+            <version>${json.service.version}</version>
         </dependency>
     </dependencies>
 

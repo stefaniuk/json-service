@@ -5,8 +5,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +20,8 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -168,7 +173,7 @@ public class JsonServiceUtil {
      * @throws IOException
      */
     public static ResponseEntity<String> handle(JsonServiceRegistry service, HttpServletRequest request,
-            HttpServletResponse response, Class<?> clazz) throws IOException {
+        HttpServletResponse response, Class<?> clazz) throws IOException {
 
         ResponseEntity<String> re = null;
 
@@ -197,7 +202,7 @@ public class JsonServiceUtil {
      * @throws IOException
      */
     public static <T> Object fromJson(String jsonAsString, Class<T> pojoClass) throws JsonMappingException,
-            JsonParseException, IOException {
+    JsonParseException, IOException {
 
         return mapper.readValue(jsonAsString, pojoClass);
     }
@@ -228,7 +233,7 @@ public class JsonServiceUtil {
      * @throws IOException
      */
     public static String toJson(Object pojo, boolean prettyPrint) throws JsonMappingException, JsonGenerationException,
-            IOException {
+    IOException {
 
         StringWriter sw = new StringWriter();
         JsonGenerator jg = jsonFactory.createJsonGenerator(sw);
@@ -251,13 +256,138 @@ public class JsonServiceUtil {
      * @throws IOException
      */
     public static void toJson(Object pojo, FileWriter fw, boolean prettyPrint) throws JsonMappingException,
-            JsonGenerationException, IOException {
+    JsonGenerationException, IOException {
 
         JsonGenerator jg = jsonFactory.createJsonGenerator(fw);
         if(prettyPrint) {
             jg.useDefaultPrettyPrinter();
         }
         mapper.writeValue(jg, pojo);
+    }
+
+    /**
+     * Converts a list to JSON array.
+     * 
+     * @param list List
+     * @return Returns JSON array.
+     */
+    public static ArrayNode toJson(List<?> list) {
+
+        ArrayNode node = mapper.createArrayNode();
+
+        for(Object obj: list) {
+            if(obj instanceof Number) {
+                // most probable
+                if(obj instanceof Integer) {
+                    node.add((Integer) obj);
+                }
+                else if(obj instanceof Double) {
+                    node.add((Double) obj);
+                }
+                // others
+                else if(obj instanceof BigDecimal) {
+                    node.add((BigDecimal) obj);
+                }
+                else if(obj instanceof Float) {
+                    node.add((Float) obj);
+                }
+                else if(obj instanceof Long) {
+                    node.add((Long) obj);
+                }
+                else if(obj instanceof Short) {
+                    node.add((Short) obj);
+                }
+                else if(obj instanceof Byte) {
+                    node.add((Byte) obj);
+                }
+            }
+            else if(obj instanceof Boolean) {
+                node.add((Boolean) obj);
+            }
+            else if(obj instanceof String) {
+                node.add((String) obj);
+            }
+            else if(obj instanceof List<?>) {
+                node.add(toJson((List<?>) obj));
+            }
+            else if(obj instanceof Map<?, ?>) {
+                node.add(toJson((Map<?, ?>) obj));
+            }
+            else {
+                try {
+                    node.addPOJO(obj);
+                }
+                catch(Exception e) {
+                    node.add(obj != null ? obj.toString() : null);
+                }
+            }
+        }
+
+        return node;
+    }
+
+    /**
+     * Converts a map to JSON object.
+     * 
+     * @param map Map
+     * @return Returns JSON object.
+     */
+    public static ObjectNode toJson(Map<?, ?> map) {
+
+        ObjectNode node = mapper.createObjectNode();
+
+        for(Object key: map.keySet()) {
+            String name = (String) key;
+            Object obj = map.get(name);
+
+            if(obj instanceof Number) {
+                // most probable
+                if(obj instanceof Integer) {
+                    node.put(name, (Integer) obj);
+                }
+                else if(obj instanceof Double) {
+                    node.put(name, (Double) obj);
+                }
+                // others
+                else if(obj instanceof BigDecimal) {
+                    node.put(name, (BigDecimal) obj);
+                }
+                else if(obj instanceof Float) {
+                    node.put(name, (Float) obj);
+                }
+                else if(obj instanceof Long) {
+                    node.put(name, (Long) obj);
+                }
+                else if(obj instanceof Short) {
+                    node.put(name, (Short) obj);
+                }
+                else if(obj instanceof Byte) {
+                    node.put(name, (Byte) obj);
+                }
+            }
+            else if(obj instanceof Boolean) {
+                node.put(name, (Boolean) obj);
+            }
+            else if(obj instanceof String) {
+                node.put(name, (String) obj);
+            }
+            else if(obj instanceof List<?>) {
+                node.put(name, toJson((List<?>) obj));
+            }
+            else if(obj instanceof Map<?, ?>) {
+                node.put(name, toJson((Map<?, ?>) obj));
+            }
+            else {
+                try {
+                    node.putPOJO(name, obj);
+                }
+                catch(Exception e) {
+                    node.put(name, obj != null ? obj.toString() : null);
+                }
+            }
+        }
+
+        return node;
     }
 
 }

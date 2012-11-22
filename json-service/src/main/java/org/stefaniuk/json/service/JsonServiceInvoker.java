@@ -6,7 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -472,7 +471,7 @@ public class JsonServiceInvoker {
     protected JsonNode process(HttpServletRequest request, ObjectNode requestNode) throws IllegalAccessException,
     InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
-        logger.debug("JSON-RPC Request: " + requestNode.toString());
+        logger.debug("JSON-RPC request: " + requestNode.toString());
 
         // make sure this object has been initialised
         if(!isInitialised) {
@@ -495,25 +494,30 @@ public class JsonServiceInvoker {
                 throw new JsonServiceException(JsonServiceError.METHOD_NOT_FOUND);
             }
 
+            logger.debug("JSON-RPC method call: " + method.getDeclaringClass().getName() + "." + method.getName());
+
             // get parameters
             ArrayNode params = ArrayNode.class.cast(requestNode.get("params"));
             ArrayList<Object> temp = new ArrayList<Object>();
             Type[] types = method.getGenericParameterTypes();
-            int i = 0;
+            int i = 0, count = 1;
             for(Type type: types) {
                 if(type.equals(HttpServletRequest.class)) {
+                    logger.debug("JSON-RPC argument " + count + ": " + request.getClass().getCanonicalName());
                     temp.add(request);
                 }
                 else {
                     JsonNode node = params.get(i++);
-                    temp.add(mapper.treeToValue(node, TypeFactory.type(type).getRawClass()));
+                    Object obj = mapper.treeToValue(node, TypeFactory.type(type).getRawClass());
+                    logger.debug("JSON-RPC argument " + count + ": " + obj.getClass().getCanonicalName());
+                    temp.add(obj);
                 }
+                count++;
             }
             Object[] args = new Object[temp.size()];
             temp.toArray(args);
 
             // invoke method
-            logger.debug("JSON-RPC Method Call: " + method.getDeclaringClass().getName() + "." + method.getName());
             try {
                 response = getJsonRpcSuccessResponse(requestNode.get("id").getIntValue(), method.invoke(context, args));
             }
@@ -535,7 +539,7 @@ public class JsonServiceInvoker {
             response = getJsonRpcErrorResponse(requestNode.get("id").getIntValue(), e.getError());
         }
 
-        logger.debug("JSON-RPC Response: " + response.toString());
+        logger.debug("JSON-RPC response: " + response.toString());
 
         return response;
     }
@@ -571,23 +575,27 @@ public class JsonServiceInvoker {
                 throw new JsonServiceException(JsonServiceError.METHOD_NOT_FOUND);
             }
 
+            logger.debug("JSON-RPC call method: " + m.getDeclaringClass().getName() + "." + m.getName());
+
             // get parameters
             ArrayList<Object> temp = new ArrayList<Object>();
             Type[] types = m.getGenericParameterTypes();
-            int i = 0;
+            int i = 0, count = 1;
             for(Type type: types) {
                 if(type.equals(HttpServletRequest.class)) {
+                    logger.debug("JSON-RPC argument " + count + ": " + request.getClass().getCanonicalName());
                     temp.add(request);
                 }
                 else {
+                    logger.debug("JSON-RPC argument " + count + ": " + args[i++].getClass().getCanonicalName());
                     temp.add(args[i++]);
                 }
+                count++;
             }
             Object[] arguments = new Object[temp.size()];
             temp.toArray(arguments);
 
             // invoke method
-            logger.debug("JSON-RPC Method Call: " + m.getDeclaringClass().getName() + "." + m.getName());
             try {
                 response = getJsonSuccessResponse(m.invoke(context, arguments));
             }
@@ -609,7 +617,7 @@ public class JsonServiceInvoker {
             response = getJsonErrorResponse(e.getError());
         }
 
-        logger.debug("JSON-RPC Response: " + response.toString());
+        logger.debug("JSON-RPC response: " + response.toString());
 
         return response;
     }
@@ -624,7 +632,7 @@ public class JsonServiceInvoker {
 
         // set result
         if(result instanceof Map<?, ?>) {
-            return toJson((Map<?, ?>) result);
+            return JsonServiceUtil.toJson((Map<?, ?>) result);
         }
         else {
             return new POJONode(result);
@@ -670,10 +678,10 @@ public class JsonServiceInvoker {
 
         // set result
         if(result instanceof List<?>) {
-            responseNode.put("result", toJson((List<?>) result));
+            responseNode.put("result", JsonServiceUtil.toJson((List<?>) result));
         }
         else if(result instanceof Map<?, ?>) {
-            responseNode.put("result", toJson((Map<?, ?>) result));
+            responseNode.put("result", JsonServiceUtil.toJson((Map<?, ?>) result));
         }
         else {
             try {
@@ -715,131 +723,6 @@ public class JsonServiceInvoker {
         responseNode.put("jsonrpc", envelope.toString());
 
         return responseNode;
-    }
-
-    /**
-     * Converts a list to JSON array.
-     * 
-     * @param list List
-     * @return Returns JSON array.
-     */
-    private ArrayNode toJson(List<?> list) {
-
-        ArrayNode node = mapper.createArrayNode();
-
-        for(Object obj: list) {
-            if(obj instanceof Number) {
-                // most probable
-                if(obj instanceof Integer) {
-                    node.add((Integer) obj);
-                }
-                else if(obj instanceof Double) {
-                    node.add((Double) obj);
-                }
-                // others
-                else if(obj instanceof BigDecimal) {
-                    node.add((BigDecimal) obj);
-                }
-                else if(obj instanceof Float) {
-                    node.add((Float) obj);
-                }
-                else if(obj instanceof Long) {
-                    node.add((Long) obj);
-                }
-                else if(obj instanceof Short) {
-                    node.add((Short) obj);
-                }
-                else if(obj instanceof Byte) {
-                    node.add((Byte) obj);
-                }
-            }
-            else if(obj instanceof Boolean) {
-                node.add((Boolean) obj);
-            }
-            else if(obj instanceof String) {
-                node.add((String) obj);
-            }
-            else if(obj instanceof List<?>) {
-                node.add(toJson((List<?>) obj));
-            }
-            else if(obj instanceof Map<?, ?>) {
-                node.add(toJson((Map<?, ?>) obj));
-            }
-            else {
-                try {
-                    node.addPOJO(obj);
-                }
-                catch(Exception e) {
-                    node.add(obj != null ? obj.toString() : null);
-                }
-            }
-        }
-
-        return node;
-    }
-
-    /**
-     * Converts a map to JSON object.
-     * 
-     * @param map Map
-     * @return Returns JSON object.
-     */
-    private ObjectNode toJson(Map<?, ?> map) {
-
-        ObjectNode node = mapper.createObjectNode();
-
-        for(Object key: map.keySet()) {
-            String name = (String) key;
-            Object obj = map.get(name);
-
-            if(obj instanceof Number) {
-                // most probable
-                if(obj instanceof Integer) {
-                    node.put(name, (Integer) obj);
-                }
-                else if(obj instanceof Double) {
-                    node.put(name, (Double) obj);
-                }
-                // others
-                else if(obj instanceof BigDecimal) {
-                    node.put(name, (BigDecimal) obj);
-                }
-                else if(obj instanceof Float) {
-                    node.put(name, (Float) obj);
-                }
-                else if(obj instanceof Long) {
-                    node.put(name, (Long) obj);
-                }
-                else if(obj instanceof Short) {
-                    node.put(name, (Short) obj);
-                }
-                else if(obj instanceof Byte) {
-                    node.put(name, (Byte) obj);
-                }
-            }
-            else if(obj instanceof Boolean) {
-                node.put(name, (Boolean) obj);
-            }
-            else if(obj instanceof String) {
-                node.put(name, (String) obj);
-            }
-            else if(obj instanceof List<?>) {
-                node.put(name, toJson((List<?>) obj));
-            }
-            else if(obj instanceof Map<?, ?>) {
-                node.put(name, toJson((Map<?, ?>) obj));
-            }
-            else {
-                try {
-                    node.putPOJO(name, obj);
-                }
-                catch(Exception e) {
-                    node.put(name, obj != null ? obj.toString() : null);
-                }
-            }
-        }
-
-        return node;
     }
 
 }

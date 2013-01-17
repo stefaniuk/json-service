@@ -76,7 +76,7 @@ public class JsonServiceRegistry {
 
     /** Collection of all the registered JSON-RPC classes. */
     private Map<String, JsonServiceInvoker> registry =
-        Collections.synchronizedMap(new HashMap<String, JsonServiceInvoker>());
+            Collections.synchronizedMap(new HashMap<String, JsonServiceInvoker>());
 
     /**
      * Registers a class to make it available to a JSON-RPC client.
@@ -286,7 +286,14 @@ public class JsonServiceRegistry {
         BufferedOutputStream bos = null;
 
         try {
+
+            // make sure class is registered, so there is no need to do this manually
+            register(clazz);
+
+            // get output stream
             bos = new BufferedOutputStream(response.getOutputStream());
+
+            // return SMD or call a method
             String method = request.getMethod();
             if(method.equals("GET")) {
                 getServiceMap(clazz, bos);
@@ -412,8 +419,8 @@ public class JsonServiceRegistry {
      */
     private void handleArray(HttpServletRequest request, ArrayNode requestNode, OutputStream os,
             JsonServiceInvoker invoker)
-            throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
-            InvocationTargetException, JsonServiceException {
+                    throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
+                    InvocationTargetException, JsonServiceException {
 
         for(int i = 0; i < requestNode.size(); i++) {
             handleNode(request, requestNode.get(i), os, invoker);

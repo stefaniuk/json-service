@@ -3,6 +3,7 @@ Build Project
 
 mvn clean install
 mvn test
+mvn source:jar javadoc:javadoc javadoc:jar
 
 How to Use
 ==========
@@ -10,7 +11,7 @@ How to Use
 Install JAR file
 ----------------
 
-    mvn install:install-file "-Dfile=json-service-1.2.0.jar" "-DgroupId=org.stefaniuk.json.service" "-DartifactId=json-service" "-Dversion=1.2.0" "-Dpackaging=jar"
+    mvn install:install-file "-Dfile=json-service-1.2.1.jar" "-DgroupId=org.stefaniuk.json.service" "-DartifactId=json-service" "-Dversion=1.2.1" "-Dpackaging=jar"
 
 Edit pom.xml
 ------------
@@ -18,7 +19,7 @@ Edit pom.xml
     <dependency>
         <groupId>org.stefaniuk.json.service</groupId>
         <artifactId>json-service</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
     </dependency>
 
 Create ExampleService bean
@@ -39,7 +40,7 @@ Edit Spring configuration file
     <bean id="jsonService" class="org.stefaniuk.json.service.JsonServiceRegistry">
         <property name="registry">
             <list>
-                <value>org.example.service.ExampleService</value>
+                <value>org.example.service.ExampleService</value> <!-- This is not necessary as per change made in 2013/01/17. -->
             </list>
         </property>
     </bean>

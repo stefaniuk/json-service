@@ -29,4 +29,5 @@ License
 
 See `LICENSE` file.
 
-> Copyright (c) 2010-2012 Daniel Stefaniuk
+> Copyright (c) 2010-2013 Daniel Stefaniuk
+

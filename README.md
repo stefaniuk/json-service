@@ -24,10 +24,10 @@ This is JSON-RPC protocol implementation (server-side) in Java with Service Mapp
 
 For more information please, visit <http://stefaniuk.github.com/json-service/>.
 
-License
+Licence
 -------
 
-See `LICENSE` file.
+See `LICENCE` file.
 
 > Copyright (c) 2010-2013 Daniel Stefaniuk
 

@@ -8,7 +8,7 @@ Project's [Home Page](http://stefaniuk.github.com/json-service/ "Project's Home 
 Quick Start
 -----------
 
-TODO
+[See INSTALL file.](https://github.com/stefaniuk/json-service/blob/master/INSTALL)
 
 Useful Resources
 ----------------

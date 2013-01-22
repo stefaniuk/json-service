@@ -32,15 +32,15 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- SLF4J -->
-        <org.slf4j.version>1.7.1</org.slf4j.version>
+        <org.slf4j.version>1.7.2</org.slf4j.version>
         <!-- log4j -->
         <log4j.version>1.2.17</log4j.version>
         <!-- Jackson -->
-        <jackson.version>1.9.10</jackson.version>
+        <jackson.version>1.9.11</jackson.version>
         <!-- Servlet API -->
-        <servlet.api.version>3.1-b02</servlet.api.version>
+        <servlet.api.version>3.1-b05</servlet.api.version>
         <!-- Spring Framework -->
-        <springframework.version>3.1.2.RELEASE</springframework.version>
+        <springframework.version>3.2.0.RELEASE</springframework.version>
     </properties>
 
     <dependencies>

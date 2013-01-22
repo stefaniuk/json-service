@@ -10,16 +10,16 @@
     </parent>
 
     <artifactId>json-service</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <packaging>jar</packaging>
     <name>json-service</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- JUnit -->
-        <junit.version>4.10</junit.version>
+        <junit.version>4.11</junit.version>
         <!-- Jetty Servlet Tester -->
-        <jetty.servlet.tester.version>8.1.7.v20120910</jetty.servlet.tester.version>
+        <jetty.servlet.tester.version>8.1.8.v20121106</jetty.servlet.tester.version>
     </properties>
 
     <dependencies>

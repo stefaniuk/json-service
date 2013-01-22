@@ -191,6 +191,34 @@ public class JsonServiceUtil {
     }
 
     /**
+     * Handles HTTP request.
+     * 
+     * @param service Service registry object
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @param obj Already instantiated object
+     * @return Returns ResponseEntity to be used by Spring Framework.
+     * @throws IOException
+     */
+    public static ResponseEntity<String> handle(JsonServiceRegistry service, HttpServletRequest request,
+        HttpServletResponse response, Object obj) throws IOException {
+
+        ResponseEntity<String> re = null;
+
+        BufferedOutputStream bos = (BufferedOutputStream) service.handle(request, response, obj);
+        String method = request.getMethod();
+        if(method.equals("GET")) {
+            re = JsonServiceUtil.getResponseEntityForServiceMap(bos);
+        }
+        else {
+            re = JsonServiceUtil.getResponseEntityForMethodCall(bos);
+
+        }
+
+        return re;
+    }
+
+    /**
      * Creates Java POJO object from JSON string.
      * 
      * @param <T>

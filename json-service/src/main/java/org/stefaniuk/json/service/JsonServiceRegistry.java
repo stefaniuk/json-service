@@ -313,6 +313,44 @@ public class JsonServiceRegistry {
      * Handles HTTP request.
      * 
      * @param request HTTP request
+     * @param response HTTP response
+     * @param obj Already instantiated object
+     * @return Returns output stream.
+     * @throws IOException
+     */
+    public OutputStream handle(HttpServletRequest request, HttpServletResponse response, Object obj) {
+
+        BufferedOutputStream bos = null;
+
+        try {
+
+            // make sure object is registered
+            register(obj);
+
+            // get output stream
+            bos = new BufferedOutputStream(response.getOutputStream());
+
+            // return SMD or call a method
+            Class<?> clazz = obj.getClass();
+            String method = request.getMethod();
+            if(method.equals("GET")) {
+                getServiceMap(clazz, bos);
+            }
+            else {
+                handle(request, bos, clazz);
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace(System.err);
+        }
+
+        return bos;
+    }
+
+    /**
+     * Handles HTTP request.
+     * 
+     * @param request HTTP request
      * @param os Output stream
      * @param clazz Class
      * @return Returns output stream.

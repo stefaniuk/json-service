@@ -15,7 +15,8 @@ Useful Resources
 
 * [JSON-RPC 2.0 Specification](http://www.jsonrpc.org/specification)
 * [Service Mapping Description Proposal](http://dojotoolkit.org/reference-guide/1.8/dojox/rpc/smd.html)
-* [dojox.rpc.Service](http://dojotoolkit.org/reference-guide/1.8/dojox/rpc/Service.html)
+* [dojox/rpc/Service](http://dojotoolkit.org/reference-guide/1.8/dojox/rpc/Service.html)
+* [djext/data/JsonServiceStore and djext/data/JsonServiceStore](https://github.com/stefaniuk/djext/tree/master/data)
 
 About
 -----

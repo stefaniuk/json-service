@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -468,6 +469,7 @@ public class JsonServiceInvoker {
      * @throws JsonMappingException
      * @throws IOException
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected JsonNode process(HttpServletRequest request, ObjectNode requestNode) throws IllegalAccessException,
     InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
@@ -503,14 +505,33 @@ public class JsonServiceInvoker {
             int i = 0, count = 1;
             for(Type type: types) {
                 if(type.equals(HttpServletRequest.class)) {
-                    logger.debug("JSON-RPC argument " + count + ": " + request.getClass().getCanonicalName());
+                    logger.debug("JSON-RPC argument type " + count + ": " + request.getClass().getCanonicalName());
                     temp.add(request);
                 }
                 else {
                     JsonNode node = params.get(i++);
-                    Object obj = mapper.treeToValue(node, TypeFactory.type(type).getRawClass());
-                    logger.debug("JSON-RPC argument " + count + ": " + obj.getClass().getCanonicalName());
+                    Object obj = mapper.treeToValue(node, TypeFactory.rawClass(type));
+                    if(obj instanceof List) {
+                        List list = (List) obj;
+                        for(int j = 0; j < list.size(); j++) {
+                            try {
+                                // get class name of the generic type
+                                String className = ((ParameterizedType) type).getActualTypeArguments()[0].toString().replace("class ", "");
+                                // convert LinkedHasMap to POJO
+                                Object pojo = mapper.readValue(
+                                    JsonServiceUtil.toJson((Map<?, ?>) list.get(j)),
+                                    Class.forName(className));
+                                // replace LinkedHasMap by POJO
+                                list.set(j, pojo);
+                            }
+                            catch(ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                     temp.add(obj);
+                    logger.debug("JSON-RPC argument " + count + " type: " + obj.getClass().getCanonicalName());
+                    logger.debug("JSON-RPC argument " + count + " value: " + obj.toString());
                 }
                 count++;
             }

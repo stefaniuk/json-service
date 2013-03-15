@@ -19,11 +19,11 @@ public class JsonRpcTester {
 
         private String method;
 
-        private List<Object> params;
+        private List<?> params;
 
         private Integer id;
 
-        public JsonRpcRequest(String method, List<Object> params) {
+        public JsonRpcRequest(String method, List<?> params) {
 
             this.jsonrpc = "2.0";
             this.method = method;
@@ -41,7 +41,7 @@ public class JsonRpcTester {
             return method;
         }
 
-        public List<Object> getParams() {
+        public List<?> getParams() {
 
             return params;
         }
@@ -76,7 +76,7 @@ public class JsonRpcTester {
         return response;
     }
 
-    public HttpTester callService(String url, String method, List<Object> parameters) throws Exception {
+    public HttpTester callService(String url, String method, List<?> parameters) throws Exception {
 
         JsonRpcRequest jrr = new JsonRpcRequest(method, parameters);
         String json = JsonServiceUtil.toJson(jrr, false);

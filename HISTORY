@@ -1,3 +1,7 @@
+2013/03/15 - ver. 1.2.2
+
+    Deserialise JSON to POJO when generic list is used as a method parameter.
+
 2013/01/22
 
     Allow to pass already instantiated object to JsonServiceUtil.handle method.

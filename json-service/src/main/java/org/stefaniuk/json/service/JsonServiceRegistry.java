@@ -68,6 +68,9 @@ public class JsonServiceRegistry {
 
     private final Logger logger = LoggerFactory.getLogger(JsonServiceRegistry.class);
 
+    /* Singleton object of JsonServiceRegistry. */
+    private static JsonServiceRegistry INSTANCE = null;
+
     /**
      * This object provides functionality for conversion between Java objects
      * and JSON.
@@ -76,7 +79,44 @@ public class JsonServiceRegistry {
 
     /** Collection of all the registered JSON-RPC classes. */
     private Map<String, JsonServiceInvoker> registry =
-            Collections.synchronizedMap(new HashMap<String, JsonServiceInvoker>());
+        Collections.synchronizedMap(new HashMap<String, JsonServiceInvoker>());
+
+    /**
+     * Constructor
+     */
+    public JsonServiceRegistry() {
+
+    }
+
+    /**
+     * Singleton pattern provided out of the box.
+     * 
+     * @return Returns {@link JsonServiceRegistry} singleton object.
+     */
+    public static JsonServiceRegistry getInstance() {
+
+        // enter synchronised block only if necessary
+        if(INSTANCE == null) {
+            synchronized(JsonServiceRegistry.class) {
+                // needs to be check again due to possible race condition
+                if(INSTANCE == null) {
+                    INSTANCE = new JsonServiceRegistry();
+                }
+            }
+        }
+
+        return INSTANCE;
+    }
+
+    /**
+     * Is this object a singleton?
+     * 
+     * @return
+     */
+    public boolean isSingleton() {
+
+        return this == INSTANCE;
+    }
 
     /**
      * Registers a class to make it available to a JSON-RPC client.
@@ -456,9 +496,8 @@ public class JsonServiceRegistry {
      * @throws JsonServiceException
      */
     private void handleArray(HttpServletRequest request, ArrayNode requestNode, OutputStream os,
-            JsonServiceInvoker invoker)
-                    throws JsonGenerationException, JsonMappingException, IOException, IllegalAccessException,
-                    InvocationTargetException, JsonServiceException {
+            JsonServiceInvoker invoker) throws JsonGenerationException, JsonMappingException, IOException,
+            IllegalAccessException, InvocationTargetException, JsonServiceException {
 
         for(int i = 0; i < requestNode.size(); i++) {
             handleNode(request, requestNode.get(i), os, invoker);

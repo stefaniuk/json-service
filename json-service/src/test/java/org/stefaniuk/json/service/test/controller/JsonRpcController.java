@@ -17,7 +17,7 @@ public class JsonRpcController extends HttpServlet {
 
     private static final String SERVICE_PACKAGE = "org.stefaniuk.json.service.test.service";
 
-    private static JsonServiceRegistry service = new JsonServiceRegistry();
+    private static final JsonServiceRegistry service = JsonServiceRegistry.getInstance();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) {

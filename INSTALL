@@ -11,7 +11,7 @@ How to Use
 Install JAR file
 ----------------
 
-    mvn install:install-file "-Dfile=json-service-1.2.2.jar" "-DgroupId=org.stefaniuk.json.service" "-DartifactId=json-service" "-Dversion=1.2.2" "-Dpackaging=jar"
+    mvn install:install-file "-Dfile=json-service-1.2.3.jar" "-DgroupId=org.stefaniuk.json.service" "-DartifactId=json-service" "-Dversion=1.2.3" "-Dpackaging=jar"
 
 Edit pom.xml
 ------------
@@ -19,7 +19,7 @@ Edit pom.xml
     <dependency>
         <groupId>org.stefaniuk.json.service</groupId>
         <artifactId>json-service</artifactId>
-        <version>1.2.2</version>
+        <version>1.2.3</version>
     </dependency>
 
 Create ExampleService bean

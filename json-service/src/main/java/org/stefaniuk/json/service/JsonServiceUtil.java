@@ -173,7 +173,7 @@ public class JsonServiceUtil {
      * @throws IOException
      */
     public static ResponseEntity<String> handle(JsonServiceRegistry service, HttpServletRequest request,
-        HttpServletResponse response, Class<?> clazz) throws IOException {
+            HttpServletResponse response, Class<?> clazz) throws IOException {
 
         ResponseEntity<String> re = null;
 
@@ -201,7 +201,7 @@ public class JsonServiceUtil {
      * @throws IOException
      */
     public static ResponseEntity<String> handle(JsonServiceRegistry service, HttpServletRequest request,
-        HttpServletResponse response, Object obj) throws IOException {
+            HttpServletResponse response, Object obj) throws IOException {
 
         ResponseEntity<String> re = null;
 
@@ -230,7 +230,7 @@ public class JsonServiceUtil {
      * @throws IOException
      */
     public static <T> Object fromJson(String jsonAsString, Class<T> pojoClass) throws JsonMappingException,
-    JsonParseException, IOException {
+            JsonParseException, IOException {
 
         return mapper.readValue(jsonAsString, pojoClass);
     }
@@ -261,7 +261,7 @@ public class JsonServiceUtil {
      * @throws IOException
      */
     public static String toJson(Object pojo, boolean prettyPrint) throws JsonMappingException, JsonGenerationException,
-    IOException {
+            IOException {
 
         StringWriter sw = new StringWriter();
         JsonGenerator jg = jsonFactory.createJsonGenerator(sw);
@@ -284,7 +284,7 @@ public class JsonServiceUtil {
      * @throws IOException
      */
     public static void toJson(Object pojo, FileWriter fw, boolean prettyPrint) throws JsonMappingException,
-    JsonGenerationException, IOException {
+            JsonGenerationException, IOException {
 
         JsonGenerator jg = jsonFactory.createJsonGenerator(fw);
         if(prettyPrint) {
@@ -414,6 +414,36 @@ public class JsonServiceUtil {
                 }
             }
         }
+
+        return node;
+    }
+
+    protected static ObjectNode getJsonServiceErrorNode(JsonServiceError jse) {
+
+        ObjectNode code = mapper.createObjectNode();
+        code.put("code", jse.getCode());
+        code.put("message", jse.getMessage());
+
+        ObjectNode node = mapper.createObjectNode();
+
+        node.put("jsonrpc", "2.0");
+        node.put("error", code);
+        node.putNull("id");
+
+        return node;
+    }
+
+    protected static ObjectNode getJsonServiceErrorNode(JsonServiceError jse, int id) {
+
+        ObjectNode code = mapper.createObjectNode();
+        code.put("code", jse.getCode());
+        code.put("message", jse.getMessage());
+
+        ObjectNode node = mapper.createObjectNode();
+
+        node.put("jsonrpc", "2.0");
+        node.put("error", code);
+        node.put("id", id);
 
         return node;
     }

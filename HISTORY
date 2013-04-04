@@ -1,3 +1,8 @@
+2013/04/04
+
+    Return "Invalid request" response on any uncaught exception but still print
+    stack trace to the error output.
+
 2013/03/27 - ver. 1.2.3
 
     Implement singleton pattern for JsonServiceRegistry class.

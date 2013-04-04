@@ -93,6 +93,20 @@ public class JsonRpcTester {
         return response;
     }
 
+    public HttpTester callService(String url, String jsonRpc) throws Exception {
+
+        HttpTester request = new HttpTester();
+        request.setMethod("POST");
+        request.setVersion("HTTP/1.1");
+        request.setHeader("Host", "127.0.0.1");
+        request.setURI(url);
+        request.setContent(jsonRpc);
+        HttpTester response = new HttpTester();
+        response.parse(tester.getResponses(request.generate()));
+
+        return response;
+    }
+
     public void assertSmdFirstPart(HttpTester response) {
 
         assertTrue(response.getContent().startsWith(SMD_FIRST_PART));

@@ -285,6 +285,16 @@ public class JsonServiceRegistry {
         }
         catch(Exception e) {
             e.printStackTrace(System.err);
+            // send "Invalid Request" response object
+            try {
+                ObjectNode response = JsonServiceUtil.getJsonServiceErrorNode(JsonServiceError.INVALID_REQUEST);
+                logger.debug("JSON-RPC response: " + response.toString());
+                mapper.createObjectNode();
+                mapper.writeValue(os, response);
+            }
+            catch(Exception ex) {
+                ex.printStackTrace(System.err);
+            }
         }
 
         return os;
@@ -307,6 +317,16 @@ public class JsonServiceRegistry {
         }
         catch(Exception e) {
             e.printStackTrace(System.err);
+            // send "Invalid Request" response object
+            try {
+                ObjectNode response = JsonServiceUtil.getJsonServiceErrorNode(JsonServiceError.INVALID_REQUEST);
+                logger.debug("JSON-RPC response: " + response.toString());
+                mapper.createObjectNode();
+                mapper.writeValue(os, response);
+            }
+            catch(Exception ex) {
+                ex.printStackTrace(System.err);
+            }
         }
 
         return os;
@@ -402,6 +422,16 @@ public class JsonServiceRegistry {
         }
         catch(Exception e) {
             e.printStackTrace(System.err);
+            // send "Invalid Request" response object
+            try {
+                ObjectNode response = JsonServiceUtil.getJsonServiceErrorNode(JsonServiceError.INVALID_REQUEST);
+                logger.debug("JSON-RPC response: " + response.toString());
+                mapper.createObjectNode();
+                mapper.writeValue(os, response);
+            }
+            catch(Exception ex) {
+                ex.printStackTrace(System.err);
+            }
         }
 
         return os;
@@ -425,6 +455,16 @@ public class JsonServiceRegistry {
         }
         catch(Exception e) {
             e.printStackTrace(System.err);
+            // send "Invalid Request" response object
+            try {
+                ObjectNode response = JsonServiceUtil.getJsonServiceErrorNode(JsonServiceError.INVALID_REQUEST);
+                logger.debug("JSON-RPC response: " + response.toString());
+                mapper.createObjectNode();
+                mapper.writeValue(os, response);
+            }
+            catch(Exception ex) {
+                ex.printStackTrace(System.err);
+            }
         }
 
         return os;

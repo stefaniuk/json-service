@@ -471,7 +471,9 @@ public class JsonServiceInvoker {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected JsonNode process(HttpServletRequest request, ObjectNode requestNode) throws IllegalAccessException,
-    InvocationTargetException, JsonParseException, JsonMappingException, IOException {
+            InvocationTargetException, JsonParseException, JsonMappingException, IOException {
+
+        // TODO: improve error handling
 
         logger.debug("JSON-RPC request: " + requestNode.toString());
 
@@ -577,9 +579,10 @@ public class JsonServiceInvoker {
      * @throws JsonMappingException
      * @throws IOException
      */
-    protected JsonNode process(HttpServletRequest request, String method, Object... args)
-            throws IllegalAccessException,
+    protected JsonNode process(HttpServletRequest request, String method, Object... args) throws IllegalAccessException,
             InvocationTargetException, JsonParseException, JsonMappingException, IOException {
+
+        // TODO: improve error handling
 
         // make sure this object has been initialised
         if(!isInitialised) {

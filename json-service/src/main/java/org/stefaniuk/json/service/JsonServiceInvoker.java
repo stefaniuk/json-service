@@ -62,7 +62,7 @@ public class JsonServiceInvoker {
     private Object context;
 
     /** Collection of all JSON-RPC method exposed to a client. */
-    private Map<String, Method> methods = new HashMap<String, Method>();;
+    private Map<String, Method> methods = new HashMap<String, Method>();
 
     /**
      * The transport property defines the transport mechanism to be used to
@@ -437,7 +437,7 @@ public class JsonServiceInvoker {
     private boolean isService(Class<?> clazz, Method method) {
 
         boolean hasAnnotation = clazz.getAnnotation(JsonService.class) != null
-                || method.getAnnotation(JsonService.class) != null;
+            || method.getAnnotation(JsonService.class) != null;
 
         return hasAnnotation && Modifier.isPublic(method.getModifiers());
     }
@@ -471,7 +471,7 @@ public class JsonServiceInvoker {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected JsonNode process(HttpServletRequest request, ObjectNode requestNode) throws IllegalAccessException,
-            InvocationTargetException, JsonParseException, JsonMappingException, IOException {
+    InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
         // TODO: improve error handling
 
@@ -580,7 +580,7 @@ public class JsonServiceInvoker {
      * @throws IOException
      */
     protected JsonNode process(HttpServletRequest request, String method, Object... args) throws IllegalAccessException,
-            InvocationTargetException, JsonParseException, JsonMappingException, IOException {
+    InvocationTargetException, JsonParseException, JsonMappingException, IOException {
 
         // TODO: improve error handling
 

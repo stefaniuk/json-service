@@ -61,4 +61,3 @@ Edit Spring controller
             Class<?> clazz) throws IOException {
         return JsonServiceUtil.handle(jsonService, request, response, clazz);
     }
-

@@ -4,14 +4,14 @@
 
     <parent>
         <groupId>org.stefaniuk.json.service</groupId>
-        <artifactId>parent</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../parent/pom.xml</relativePath>
+        <artifactId>json-service-parent</artifactId>
+        <version>1.2.3</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>json-service-web</artifactId>
     <packaging>war</packaging>
-    <name>json-service-web</name>
+    <name>${project.artifactId}</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

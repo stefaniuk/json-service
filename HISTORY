@@ -21,4 +21,3 @@
 
     Make sure class is registered by JsonServiceRegistry.handle method, so there
     is no need to do this manually.
-

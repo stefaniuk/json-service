@@ -1,7 +1,4 @@
 .classpath
 .project
 .settings
-json-service-web/target
-json-service/target
-parent/target
 target

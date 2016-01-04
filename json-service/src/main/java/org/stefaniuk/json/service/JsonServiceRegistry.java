@@ -45,11 +45,13 @@ import org.slf4j.LoggerFactory;
  * achieved by calling
  * {@link #handle(HttpServletRequest, HttpServletResponse, Class) handle} method
  * on the registry object itself:
+ * </p>
  * 
  * <pre>
  * registry.handle(request, response, NameOfClass.class);
  * </pre>
  * 
+ * <p>
  * From a controller (using Spring Framework) this can be done by calling static
  * method
  * {@link JsonServiceUtil#handle(JsonServiceRegistry, HttpServletRequest, HttpServletResponse, Class)
@@ -339,7 +341,6 @@ public class JsonServiceRegistry {
      * @param response HTTP response
      * @param clazz Class
      * @return Returns output stream.
-     * @throws IOException
      */
     public OutputStream handle(HttpServletRequest request, HttpServletResponse response, Class<?> clazz) {
 
@@ -376,7 +377,6 @@ public class JsonServiceRegistry {
      * @param response HTTP response
      * @param obj Already instantiated object
      * @return Returns output stream.
-     * @throws IOException
      */
     public OutputStream handle(HttpServletRequest request, HttpServletResponse response, Object obj) {
 
